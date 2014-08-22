@@ -87,7 +87,7 @@ def myOnShared(self):
             remoteDid = getOnlyText("Provide a remote deck-ID")
             print("remoteDid = " + remoteDid)
             #TODO: call with proper arguments
-            addRemoteDeck(remoteDid)
+            addRemoteDeck(remoteDid,"http://144.76.172.187:5000/v0",mw.col.conf.get('pubSubName', ""),mw.col.conf.get('pubSubPassword',""))
 
 def share(did):
     """Share a deck with the server."""
