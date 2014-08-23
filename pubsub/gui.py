@@ -91,9 +91,12 @@ def myOnShared(self):
             remoteDid = getOnlyText("Provide a remote deck-ID")
             if remoteDid:
                 print("remoteDid = " + remoteDid)
-                addRemoteDeck(remoteDid, "http://144.76.172.187:5000/v0",
-                              mw.col.conf.get('pubSubName', ""),
-                              mw.col.conf.get('pubSubPassword', ""))
+                try:
+                    addRemoteDeck(remoteDid, "http://144.76.172.187:5000/v0",
+                                  mw.col.conf.get('pubSubName', ""),
+                                  mw.col.conf.get('pubSubPassword', ""))
+                except Exception:
+                    showInfo("You entered a wrong user name or password please try again.")
 
 
 def share(did):
