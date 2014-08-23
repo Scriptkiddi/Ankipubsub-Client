@@ -40,8 +40,12 @@ def setupAnkiPubSub(self):
     layout.insertWidget(5, ankipubsubPassword)
 
     ankipubsubenable.stateChanged.connect(pubSubEnable)
-    ankipubsubName.connect(ankipubsubName, SIGNAL("editingFinished()"), updateName)
-    ankipubsubPassword.connect(ankipubsubPassword, SIGNAL("editingFinished()"), updatePassword)
+    ankipubsubName.connect(ankipubsubName,
+                           SIGNAL("editingFinished()"),
+                           updateName)
+    ankipubsubPassword.connect(ankipubsubPassword,
+                               SIGNAL("editingFinished()"),
+                               updatePassword)
 
     groupBox.setLayout(layout)
     container.insertWidget(int(layout.count())+1, groupBox)
@@ -85,9 +89,11 @@ def myOnShared(self):
             openLink(aqt.appShared+"decks/")
     elif choice == "PubSub":
             remoteDid = getOnlyText("Provide a remote deck-ID")
-            print("remoteDid = " + remoteDid)
+            if remoteDid:
+                print("remoteDid = " + remoteDid)
             #TODO: call with proper arguments
-            addRemoteDeck(remoteDid)
+                addRemoteDeck(remoteDid)
+                
 
 def share(did):
     """Share a deck with the server."""
