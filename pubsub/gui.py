@@ -30,7 +30,7 @@ def setupAnkiPubSub(self):
 
     ankipubsubPasswordLabel = QLabel("Password:")
     ankipubsubPassword = QLineEdit()
-    ankipubsubPassword.setText(mw.col.conf.get('pubSubPassword',""))
+    ankipubsubPassword.setText(mw.col.conf.get('pubSubPassword', ""))
     ankipubsubPassword.setEchoMode(QLineEdit.Password)
 
     layout.insertWidget(1, ankipubsubenable)
@@ -102,7 +102,11 @@ def myOnShared(self):
 def share(did):
     """Share a deck with the server."""
     try:
-        sync(did,"http://144.76.172.187:5000/v0",mw.col.conf.get('pubSubName', ""),mw.col.conf.get('pubSubPassword',""))
+        sync(did,
+             "http://144.76.172.187:5000/v0",
+             mw.col.conf.get('pubSubName', ""),
+             mw.col.conf.get('pubSubPassword', "")
+             )
     except Exception as e:
         showInfo("There was a problem sharing your deck. \n"+str(e))
 
