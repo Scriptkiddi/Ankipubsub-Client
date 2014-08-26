@@ -1,7 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from UserDict import UserDict
-from pubsub.util import getRemoteDeckID, getRemoteDeckLastChange, getLocalDeckID
+from pubsub.util import (getRemoteDeckID,
+                         getRemoteDeckLastChange,
+                         getLocalDeckID,
+                         convertToDatetime)
 from aqt import mw
 
 
@@ -12,6 +15,7 @@ class AnkipubSubDeck(UserDict):
 
         if deck:
             self.update(deck)
+            self.setLastChange(convertToDatetime(self.getLastChange()))
         else:
             # print(deck,localDeckID,notes,models,col)
             remoteDeckID = getRemoteDeckID(localDeckID)

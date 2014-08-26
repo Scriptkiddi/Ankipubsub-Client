@@ -39,8 +39,12 @@ def getRemoteDeckLastChange(localID):
     WHERE LocalID = ?",
                                   localID)
     if lastChange:
-        try:
-            return datetime.strptime(lastChange, "%Y-%m-%d %H:%M:%S")
-        except ValueError:
-            return datetime.strptime(lastChange, "%Y-%m-%d %H:%M:%S.%f")
+        return convertToDatetime(lastChange)
     return None
+
+
+def convertToDatetime(string):
+    try:
+        return datetime.strptime(string, "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        return datetime.strptime(string, "%Y-%m-%d %H:%M:%S.%f")

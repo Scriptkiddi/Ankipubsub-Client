@@ -50,7 +50,7 @@ class connectionHandler(object):
                                          data=json.dumps(payload),
                                          headers=headers).json()
 
-        deck = AnkipubSubDeck(deckResponse, deck.getLocalID())
+        deck = AnkipubSubDeck(deckResponse)
 
         self.logout()
         newNotes = []

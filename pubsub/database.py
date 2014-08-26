@@ -71,7 +71,7 @@ def deckToObject(deckID):
         aModel = AnkipubSubModel(model)
         models.append(aModel)
     #Create a new Deck Object which we can push later to the server
-    deckObject = AnkipubSubDeck(None, deckID, notes, models)
+    deckObject = AnkipubSubDeck(None, deckID,notes,models)
 
     deckObject.setName(ankiDeck.get('name'))
     deckObject.setDescription(ankiDeck.get('desc'))
@@ -96,36 +96,44 @@ def addRemoteDeck(remoteDeckID, serverURL, username, password):
 
 def sync(localDeckID, serverURL, username, password, firsttime=True):
     """Syncronice a local deck with a remote deck."""
-    #Create a Server handle to send the requests to
-    server = connectionHandler(serverURL,username,password)
+    # Create a Server handle to send the requests to
+    server = connectionHandler(serverURL, username, password)
     col = mw.col
     print("Starting sync")
-    #Create a Deck object from the localDeckID
+    # Create a Deck object from the localDeckID
     localDeckToPush = deckToObject(localDeckID)
-    #Check if we have a RemoteId for the deck
-    #if not we assume the Deck doesnt exist on the server
+    # Check if we have a RemoteId for the deck
+    # if not we assume the Deck doesnt exist on the server
     if not localDeckToPush.getRemoteID():
 
-        print("The deck with the {0} did not have a RemoteId so we push it to the server".format(localDeckID))
-        #copy that stuff because server.push push does conversion magic
+        print("The deck with the {0} did not have a RemoteId\
+         so we push it to the server".format(localDeckID))
+        # copy that stuff because server.push push does conversion magic
         remoteDeck = server.push_deck(localDeckToPush)
 
-        #deepcopy that bitch because of conversion magic in serverupdate UserDict-->Json and not back
-        #todo maybe do this in serverupdate not sure but for now fuck it
+        """deepcopy that bitch because of conversion magic in serverupdate\
+        UserDict-->Json and not back todo maybe do this in serverupdate not\
+         sure but for now fuck it"""
 
-        print('write new entry to DeckIDs RemoteId = {0} localid = {1}'.format(remoteDeck.getRemoteID(), localDeckID))
+        print('write new entry to DeckIDs RemoteId\
+         = {0} localid = {1}'.format(remoteDeck.getRemoteID(), localDeckID))
 
-        remoteDeck.save(mw.col,serverURL)
+        remoteDeck.save(mw.col, serverURL)
     else:  # deck exists
-        print('The we are trying to sync has following remote ID {0}'.format(localDeckToPush.getRemoteID()))
-        #We pull the Deck from the Server to check if there where any changes done
+        print('The we are trying to sync\
+        has following remote ID {0}'.format(localDeckToPush.getRemoteID()))
+        """We pull the Deck from the Server to check if there\
+         where any changes done"""
         remoteDeckPull = server.pull_deck(localDeckToPush.getRemoteID())
-        #If the Date from the last Change on the Server is newer then the Date we wrote in our Database local
+        """If the Date from the last Change on the Server is newer then the\
+         Date we wrote in our Database local"""
         #
-        print('Last Change on the Server Deck {0}'.format(remoteDeckPull.getLastChange()))
-        print('Last Change on the Local Deck {0}'.format(localDeckToPush.getLastChange()))
+        print('Last Change on the Server\
+         Deck {0}'.format(remoteDeckPull.getLastChange()))
+        print('Last Change on the Local\
+         Deck {0}'.format(localDeckToPush.getLastChange()))
 
-        lastChange = remoteDeckPull.getLastChange()[:-4]
+        # lastChange = remoteDeckPull.getLastChange()[:-4]
         # -4 to get rid of the gtm at the end of the string
 
         """ OK from here on its fucking dirty watch where you step your\
@@ -148,6 +156,7 @@ def sync(localDeckID, serverURL, username, password, firsttime=True):
         # ITS DIRTY ITS NOT BEUTIFUL BUT IT WORKS
         print(remoteDeckPull.getLastChange())
         print(localDeckToPush.getLastChange())
+        print(isinstance(remoteDeckPull.getLastChange(), unicode))
         if (remoteDeckPull.getLastChange() > localDeckToPush.getLastChange())\
            and firsttime:
             print('Deck on the Server is newer so we pull the deck')
