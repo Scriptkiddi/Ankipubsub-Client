@@ -1,3 +1,4 @@
+""" connectionhandler.py contains the connectionHandler class."""
 # !/usr/bin/python
 #  -*- coding: utf-8 -*-
 import requests
@@ -10,21 +11,33 @@ from copy import deepcopy
 
 class connectionHandler(object):
 
+    """
+    Wrapper Class for server Connection.
+
+    This class handels Session managment and the the calls to the server.
+    """
+
     def __init__(self, serverUrl, username, password):
+        """Build an object with a session and the passed login credentials."""
         self.url = serverUrl
         self.password = password
         self.username = username
         self.session = requests.Session()
-        # Session damit login Informationen mit gespeichert werden
 
     def push_deck(self, deck):
+        """
+        Push the passed deck to the server.
+
+        Take the passed deck transform the models and notes to clean python
+        dictionarys, because as an object they are a UserDict which
+        can not be converted to json easily
+        """
         deck = deepcopy(deck)
         self.login()  # Führe login durch
 
         notes = deck.get('notes')
         models = deck.get('models')
-        """ Schreibe daten struktur um da die Karten eine eigene Klasse\
-         sind die nur von UserDict geerbt hat"""
+
         for note in notes:
             notes[notes.index(note)] = note.data
         for model in models:
@@ -64,7 +77,15 @@ class connectionHandler(object):
         return deck
 
     def pull_deck(self, deckid, **kwargs):
+        """
+        Pull the deck with the passed deckid from the server.
 
+        This function sends a get request to the server and retrieves the
+        the deck with the passed id if the access right are sufficent.
+        The passed deck will be converted to AnkipubSub objects
+        for better handling during the creation of the cards.
+        after the complete conversion a AnkipubSubDeck is returend.
+        """
         # Kontrolliere ob zusätzliche Parameter übergeben wurden
         if kwargs:
             payload = kwargs.items()
@@ -100,6 +121,7 @@ class connectionHandler(object):
         return deck
 
     def login(self):
+        """Send login credentials to the server and create seesion."""
         r = self.session.get(self.url+'/login',
                              auth=(self.username, self.password))
 
@@ -110,4 +132,5 @@ class connectionHandler(object):
             raise Exception('401', 'Wrong Password or Username')
 
     def logout(self):
+        """destroy the session on the server side."""
         self.session.get(self.url+'/logout')
