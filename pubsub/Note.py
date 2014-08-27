@@ -36,7 +36,7 @@ class AnkipubSubNote(UserDict):
     def setLocalID(self, localCardID):
         self.update({'localID':  localCardID})
 
-    def getID(self):
+    def getRemoteID(self):
         return self.get('id')
 
     def getLocalID(self):

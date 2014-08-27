@@ -1,6 +1,6 @@
-""" connectionhandler.py contains the connectionHandler class."""
 # !/usr/bin/python
 #  -*- coding: utf-8 -*-
+""" connectionhandler.py contains the connectionHandler class."""
 import requests
 import json
 from Deck import AnkipubSubDeck
@@ -42,7 +42,6 @@ class connectionHandler(object):
             notes[notes.index(note)] = note.data
         for model in models:
             models[models.index(model)] = model.data
-        print(len(models))
         deck.update({'notes': notes, 'models': models})
         deck.setLastChange(str(deck.getLastChange()))
 
@@ -63,7 +62,7 @@ class connectionHandler(object):
                                          data=json.dumps(payload),
                                          headers=headers).json()
 
-        deck = AnkipubSubDeck(deckResponse)
+        deck = AnkipubSubDeck.fromJsonObject(deckResponse)
 
         self.logout()
         newNotes = []
@@ -103,7 +102,7 @@ class connectionHandler(object):
             return None
 
         # Erzeuge aus der JSOn antwort ein Deck
-        deck = AnkipubSubDeck(deckResponse.json())
+        deck = AnkipubSubDeck.fromJsonObject(deckResponse.json())
 
         """Erzeuge aus den Karten in dieser Antwort AnkipupSub Objecte und\
          ersetze damit die Json Liste"""
