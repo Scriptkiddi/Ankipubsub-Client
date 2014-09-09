@@ -1,14 +1,14 @@
 from anki.hooks import wrap
 from aqt.preferences import Preferences
 from aqt.deckbrowser import DeckBrowser
-from aqt.utils import askUserDialog, openLink, showInfo, getOnlyText
+from aqt.utils import askUserDialog, openLink, showInfo, getOnlyText, shortcut
 from aqt.qt import *
 from aqt import mw
 import aqt
 from permissions import Ui_Dialog
-from aqt.qt import debug
 from database import sync, addRemoteDeck
 from pubsub import util
+from deckmanagerUI import Ui_Form
 
 
 def setupAnkiPubSub(self):
@@ -116,6 +116,111 @@ def share(did):
     d.ui.remoteDeckID.setText(str(util.getRemoteDeckID(did)))
     d.exec_()
 
+
+class AnkiPubSubDeckManagerTableViewModel(QAbstractTableModel):
+    def __init__(self, datain, headerdata, parent=None, *args):
+        """ datain: a list of lists
+            headerdata: a list of strings
+        """
+        QAbstractTableModel.__init__(self, parent, *args)
+        self.arraydata = datain
+        self.headerdata = headerdata
+
+    def rowCount(self, parent):
+        return len(self.arraydata)
+
+    def columnCount(self, parent):
+        return len(self.arraydata[0])
+
+    def data(self, index, role):
+        if not index.isValid():
+            return None
+        elif role != Qt.DisplayRole:
+            return None
+        return self.arraydata[index.row()][index.column()]
+
+    def headerData(self, col, orientation, role):
+        if orientation == Qt.Horizontal and role == Qt.DisplayRole:
+            return self.headerdata[col]
+        return None
+
+    def sort(self, Ncol, order):
+        """Sort table by given column number.
+        """
+        self.emit(SIGNAL("layoutAboutToBeChanged()"))
+        self.arraydata = sorted(self.arraydata, key=operator.itemgetter(Ncol))
+        if order == Qt.DescendingOrder:
+            self.arraydata.reverse()
+        self.emit(SIGNAL("layoutChanged()"))
+
+
+def ankiDeckManagerSetup():
+    """
+    Configure the Ui_Dialog.
+
+    This function starts with collecting the data
+    needed to fill the table in the ui, then
+    straps it all together and exec it to present
+    it to the user.
+    """
+    header = ['Deck', 'Deck Owner', '']
+    data = [['00', '01', '02'],
+            ['10', '11', '12'],
+            ['20', '21', '22']]
+    tablemodel = AnkiPubSubDeckManagerTableViewModel(data, header)
+    f = QDialog()
+    f.ui = Ui_Form()
+    f.ui.setupUi(f)
+    f.ui.tableView.setModel(tablemodel)
+    f.exec_()
+
+
+def test(self):
+    links = [
+        ["", "ankipubsubDeckManager", _("AnkiPubSub")],
+        ["", "shared", _("Get Shared")],
+        ["", "create", _("Create Deck")],
+        ["Ctrl+I", "import", _("Import File")],
+    ]
+    buf = ""
+    for b in links:
+        if b[0]:
+            b[0] = _("Shortcut key: %s") % shortcut(b[0])
+        buf += """
+<button title='%s' onclick='py.link(\"%s\");'>%s</button>""" % tuple(b)
+    self.bottom.draw(buf)
+    if isMac:
+        size = 28
+    else:
+        size = 36 + self.mw.fontHeightDelta*3
+    self.bottom.web.setFixedHeight(size)
+    self.bottom.web.setLinkHandler(self._linkHandler)
+
+
+def ankiPubSubLinkHandler(self, url, **kwargs):
+    """
+    wrap around the normal Link Handler.
+
+    It checks for the signals we expect for the buttons we placed in the gui
+    if it cant find a single that it needs to trigger on it passes
+    it to the normal _linkHandler function.
+    """
+    if ":" in url:
+        (cmd, arg) = url.split(":")
+    else:
+        cmd = url
+
+    if cmd == "ankipubsubDeckManager":
+        ankiDeckManagerSetup()
+    else:
+        kwargs.get('_old')(self, url)
+
+
+DeckBrowser._drawButtons = wrap(DeckBrowser._drawButtons, test)
+
+DeckBrowser._linkHandler = wrap(DeckBrowser._linkHandler,
+                                ankiPubSubLinkHandler,
+                                pos='around')
 Preferences.setupNetwork = wrap(Preferences.setupNetwork, setupAnkiPubSub)
 
 DeckBrowser._showOptions = myShowOptions
