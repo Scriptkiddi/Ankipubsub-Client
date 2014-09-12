@@ -12,6 +12,7 @@ from deckmanagerUI import AnkiPubSubDeckManagerUI
 from deck_settings import Ui_Form
 from PyQt4 import QtCore, QtGui
 from Deck import AnkipubSubDeck
+from ankipubsub_settings import AnkiPubSubSettingsUI
 
 def setupAnkiPubSub(self):
     """Add options to the preferences menu."""
@@ -133,6 +134,8 @@ def ankiDeckManagerSetup():
     f = QDialog()
     f.ui = AnkiPubSubDeckManagerUI()
     f.ui.setupUi(f)
+
+    f.ui.ankiPubSubSettings.clicked.connect(lambda: ankiPubSubSettings())
     table = f.ui.tableWidget
     decks = util.getAllAnkiPubSubDecks()
     table.setRowCount(len(decks))
@@ -177,6 +180,11 @@ def ankiDeckManagerSetup():
     table.setColumnWidth(2, 120)
     f.exec_()
 
+def ankiPubSubSettings():
+    f = QDialog()
+    f.ui = AnkiPubSubSettingsUI()
+    f.ui.setupUi(f)
+    f.exec_()
 
 def ankiDeckSettings(did):
     f = QDialog()
