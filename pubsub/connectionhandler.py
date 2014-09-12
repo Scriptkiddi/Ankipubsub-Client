@@ -134,3 +134,14 @@ class connectionHandler(object):
     def logout(self):
         """destroy the session on the server side."""
         self.session.get(self.url+'/logout')
+
+    def getReadGroup(self, remoteDeckID):
+        self.login()
+        self.session.get(self.url+'/')
+        self.logout()
+
+    def getAccessGroups(self, remoteDeckID):
+        self.login()
+        r = self.session.get(self.url+'/users/get/accessGroups/'+str(remoteDeckID))
+        self.logout()
+        return r.json()

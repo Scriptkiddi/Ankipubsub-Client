@@ -101,3 +101,12 @@ def upload(localDeckID, serverURL, username, password):
     server = connectionHandler(serverURL, username, password)
     remoteDeck = server.push_deck(localDeckToPush)
     remoteDeck.save()
+
+
+def getReadGroup(localDeckID, serverURL, username, password):
+    server = connectionHandler(serverURL, username, password)
+    server.getReadGroup(localDeckID)
+
+def getAccessGroups(localDeckID, serverURL, username, password):
+    server = connectionHandler(serverURL, username, password)
+    return server.getAccessGroups(localDeckID)

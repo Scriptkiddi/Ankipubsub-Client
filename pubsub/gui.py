@@ -6,9 +6,10 @@ from aqt.qt import *
 from aqt import mw
 import aqt
 from permissions import Ui_Dialog
-from database import sync, addRemoteDeck, download
+from database import sync, addRemoteDeck, download, getAccessGroups
 from pubsub import util
-from deckmanagerUI import Ui_Form
+from deckmanagerUI import AnkiPubSubDeckManagerUI
+from deck_settings import Ui_Form
 from PyQt4 import QtCore, QtGui
 from Deck import AnkipubSubDeck
 
@@ -118,43 +119,6 @@ def share(did):
     d.exec_()
 
 
-class AnkiPubSubDeckManagerTableViewModel(QAbstractTableModel):
-    def __init__(self, datain, headerdata, parent=None, *args):
-        """ datain: a list of lists
-            headerdata: a list of strings
-        """
-        QAbstractTableModel.__init__(self, parent, *args)
-        self.arraydata = datain
-        self.headerdata = headerdata
-
-    def rowCount(self, parent):
-        return len(self.arraydata)
-
-    def columnCount(self, parent):
-        return len(self.arraydata[0])
-
-    def data(self, index, role):
-        if not index.isValid():
-            return None
-        elif role != Qt.DisplayRole:
-            return None
-        return self.arraydata[index.row()][index.column()]
-
-    def headerData(self, col, orientation, role):
-        if orientation == Qt.Horizontal and role == Qt.DisplayRole:
-            return self.headerdata[col]
-        return None
-
-    def sort(self, Ncol, order):
-        """Sort table by given column number.
-        """
-        self.emit(SIGNAL("layoutAboutToBeChanged()"))
-        self.arraydata = sorted(self.arraydata, key=operator.itemgetter(Ncol))
-        if order == Qt.DescendingOrder:
-            self.arraydata.reverse()
-        self.emit(SIGNAL("layoutChanged()"))
-
-
 def ankiDeckManagerSetup():
     """
     Configure the Ui_Dialog.
@@ -166,47 +130,101 @@ def ankiDeckManagerSetup():
     """
     # create an cell widget
 
-    header = ['Deck', 'Deck Remote ID', '']
-
     f = QDialog()
-    f.ui = Ui_Form()
+    f.ui = AnkiPubSubDeckManagerUI()
     f.ui.setupUi(f)
     table = f.ui.tableWidget
     decks = util.getAllAnkiPubSubDecks()
     table.setRowCount(len(decks))
     table.setColumnCount(3)
-    table.setHorizontalHeaderLabels(header)
+    table.setHorizontalHeaderLabels(['Deck', 'Deck Remote ID', ''])
     for (i, deck) in enumerate(decks):
         did = deck[1]
 
         deck = AnkipubSubDeck.fromLocalID(did)
         widget = QWidget(table)
         btnDelete = QPushButton(widget)
-        btnDelete.setGeometry(0, 0, 20, 20)
+        btnDelete.setGeometry(0, 0, 30, 30)
+        btnDelete.setIcon(QIcon('/home/fritz/code/radical-dreamers/Ankipubsub-Client/pubsub/images/Delete-Resized.jpg'))
+        btnDelete.setIconSize(QSize(25, 25))
+
         btnDownload = QPushButton(widget)
-        btnDownload.setGeometry(20, 0, 20, 20)
+        btnDownload.setGeometry(30, 0, 30, 30)
         btnDownload.clicked.connect(
             lambda: download(did,
                              mw.col.conf.get('ankipubsubServer',
                                              "http://144.76.172.187:5000/v0"),
                              mw.col.conf.get('pubSubName', ""),
                              mw.col.conf.get('pubSubPassword', "")))
+        btnDownload.setIcon(QIcon('/home/fritz/code/radical-dreamers/Ankipubsub-Client/pubsub/images/Download-Resized.jpg'))
+        btnDownload.setIconSize(QSize(25, 25))
+
         btnUpload = QPushButton(widget)
-        btnUpload.setText('Upload')
-        btnUpload.setGeometry(40, 0, 20, 20)
+        btnUpload.setGeometry(60, 0, 30, 30)
+        btnUpload.setIcon(QIcon('/home/fritz/code/radical-dreamers/Ankipubsub-Client/pubsub/images/Upload-Resized.jpg'))
+        btnUpload.setIconSize(QSize(25, 25))
+
         btnSettings = QPushButton(widget)
-        btnSettings.setText('Settings')
-        btnSettings.setGeometry(60, 0, 20, 20)
-        btnSettings.clicked.connect(lambda: showInfo())
+        btnSettings.setGeometry(90, 0, 30, 30)
+        btnSettings.setIcon(QIcon('/home/fritz/code/radical-dreamers/Ankipubsub-Client/pubsub/images/Settings-Resized.jpg'))
+        btnSettings.setIconSize(QSize(25, 25))
+        btnSettings.clicked.connect(lambda: ankiDeckSettings(deck.getRemoteID()))
         table.setCellWidget(i, 2, widget)
         table.setItem(i, 0, QTableWidgetItem(str(deck.getName())))
         table.setItem(i, 1, QTableWidgetItem(str(deck.getRemoteID())))
-
+    table.setColumnWidth(0, 160)
+    table.setColumnWidth(1, 200)
+    table.setColumnWidth(2, 120)
     f.exec_()
 
 
 def ankiDeckSettings(did):
+    f = QDialog()
+    f.ui = Ui_Form()
+    f.ui.setupUi(f)
+    table = f.ui.tableWidget
+    groups = getAccessGroups(did,
+                             mw.col.conf.get('ankipubsubServer',
+                                             "http://144.76.172.187:5000/v0"),
+                             mw.col.conf.get('pubSubName', ""),
+                             mw.col.conf.get('pubSubPassword', ""))
+    users = {}
+    for user in groups.get('readGroup'):
+        if user not in users:
+            users[user] = 1
+        else:
+            users[user] += 1
 
+    for user in groups.get('writeGroup'):
+        if user not in users:
+            users[user] = 1
+        else:
+            users[user] += 1
+
+    for user in groups.get('adminGroup'):
+        if user not in users:
+            users[user] = 1
+        else:
+            users[user] += 1
+    table.setRowCount(len(users))
+    for (i, user) in enumerate(users):
+        isAdmin = QtGui.QCheckBox(table)
+        canWrite = QtGui.QCheckBox(table)
+        canRead = QtGui.QCheckBox(table)
+        if users[user] >= 1:
+            canRead.setChecked(True)
+        if users[user] >= 2:
+            canWrite.setChecked(True)
+        if users[user] >= 3:
+            isAdmin.setChecked(True)
+        table.setItem(i, 0, QTableWidgetItem(str(user)))
+        table.setCellWidget(i, 1, canRead)
+        table.setCellWidget(i, 2, canWrite)
+        table.setCellWidget(i, 3, isAdmin)
+
+    table.setHorizontalHeaderLabels(['Name', 'Read', 'Write', 'Admin'])
+    table.resizeColumnsToContents()
+    f.exec_()
 
 
 def test(self):
