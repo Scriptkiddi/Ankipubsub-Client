@@ -6,10 +6,11 @@ from aqt.qt import *
 from aqt import mw
 import aqt
 from permissions import Ui_Dialog
-from database import sync, addRemoteDeck
+from database import sync, addRemoteDeck, download
 from pubsub import util
 from deckmanagerUI import Ui_Form
-
+from PyQt4 import QtCore, QtGui
+from Deck import AnkipubSubDeck
 
 def setupAnkiPubSub(self):
     """Add options to the preferences menu."""
@@ -163,16 +164,49 @@ def ankiDeckManagerSetup():
     straps it all together and exec it to present
     it to the user.
     """
-    header = ['Deck', 'Deck Owner', '']
-    data = [['00', '01', '02'],
-            ['10', '11', '12'],
-            ['20', '21', '22']]
-    tablemodel = AnkiPubSubDeckManagerTableViewModel(data, header)
+    # create an cell widget
+
+    header = ['Deck', 'Deck Remote ID', '']
+
     f = QDialog()
     f.ui = Ui_Form()
     f.ui.setupUi(f)
-    f.ui.tableView.setModel(tablemodel)
+    table = f.ui.tableWidget
+    decks = util.getAllAnkiPubSubDecks()
+    table.setRowCount(len(decks))
+    table.setColumnCount(3)
+    table.setHorizontalHeaderLabels(header)
+    for (i, deck) in enumerate(decks):
+        did = deck[1]
+
+        deck = AnkipubSubDeck.fromLocalID(did)
+        widget = QWidget(table)
+        btnDelete = QPushButton(widget)
+        btnDelete.setGeometry(0, 0, 20, 20)
+        btnDownload = QPushButton(widget)
+        btnDownload.setGeometry(20, 0, 20, 20)
+        btnDownload.clicked.connect(
+            lambda: download(did,
+                             mw.col.conf.get('ankipubsubServer',
+                                             "http://144.76.172.187:5000/v0"),
+                             mw.col.conf.get('pubSubName', ""),
+                             mw.col.conf.get('pubSubPassword', "")))
+        btnUpload = QPushButton(widget)
+        btnUpload.setText('Upload')
+        btnUpload.setGeometry(40, 0, 20, 20)
+        btnSettings = QPushButton(widget)
+        btnSettings.setText('Settings')
+        btnSettings.setGeometry(60, 0, 20, 20)
+        btnSettings.clicked.connect(lambda: showInfo())
+        table.setCellWidget(i, 2, widget)
+        table.setItem(i, 0, QTableWidgetItem(str(deck.getName())))
+        table.setItem(i, 1, QTableWidgetItem(str(deck.getRemoteID())))
+
     f.exec_()
+
+
+def ankiDeckSettings(did):
+
 
 
 def test(self):

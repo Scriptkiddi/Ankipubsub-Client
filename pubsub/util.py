@@ -4,6 +4,10 @@ from datetime import datetime
 from aqt import mw
 
 
+def getAllAnkiPubSubDecks():
+    return mw.col.db.all("SELECT RemoteID, LocalID FROM DeckIDs")
+
+
 def getRemoteNoteID(localID):
     return mw.col.db.scalar("SELECT RemoteID FROM NoteIDs WHERE LocalID = ?",
                             localID)

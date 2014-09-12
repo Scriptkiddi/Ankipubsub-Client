@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'deckmanager.ui'
 #
-# Created: Tue Sep  9 10:10:51 2014
+# Created: Thu Sep 11 17:03:17 2014
 #      by: PyQt4 UI code generator 4.11.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(511, 480)
+        Form.resize(506, 480)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("images/Logo.jpg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
@@ -74,19 +74,21 @@ class Ui_Form(object):
         self.ankiPubSubAddDeck.setGeometry(QtCore.QRect(410, 40, 81, 81))
         self.ankiPubSubAddDeck.setText(_fromUtf8(""))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("pubsub/images/Plus-Resized.jpg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("images/Plus-Resized.jpg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ankiPubSubAddDeck.setIcon(icon1)
         self.ankiPubSubAddDeck.setIconSize(QtCore.QSize(81, 81))
         self.ankiPubSubAddDeck.setObjectName(_fromUtf8("ankiPubSubAddDeck"))
-        self.tableView = QtGui.QTableView(Form)
-        self.tableView.setGeometry(QtCore.QRect(10, 60, 491, 261))
-        self.tableView.setObjectName(_fromUtf8("tableView"))
+        self.tableWidget = QtGui.QTableWidget(Form)
+        self.tableWidget.setGeometry(QtCore.QRect(0, 60, 501, 281))
+        self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
+        self.tableWidget.setColumnCount(0)
+        self.tableWidget.setRowCount(0)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(_translate("Form", "Form", None))
+        Form.setWindowTitle(_translate("Form", "AnkiPubSub Deck Manager", None))
         self.label.setText(_translate("Form", "AnkiPubSub Deck Manager", None))
         self.ankiPubSubSettings.setText(_translate("Form", "Settings", None))
         self.groupBox.setTitle(_translate("Form", "Subscribe to a new Deck:", None))

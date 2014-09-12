@@ -86,4 +86,18 @@ def sync(localDeckID, serverURL, username, password, firsttime=True):
             remoteDeckPush = server.push_deck(localDeckToPush)
             remoteDeckPush.save(col, serverURL)
         else:
-            print('We have not added new Notes and the Server has not new notes for us so we dont do anything')
+            print('We have not added new Notes and the Server has no new notes for us so we dont do anything')
+
+
+def download(localDeckID, serverURL, username, password):
+    localDeckToPush = AnkipubSubDeck.fromLocalID(localDeckID)
+    server = connectionHandler(serverURL, username, password)
+    remoteDeckPull = server.pull_deck(localDeckToPush.getRemoteID())
+    remoteDeckPull.save(mw.col, serverURL)
+
+
+def upload(localDeckID, serverURL, username, password):
+    localDeckToPush = AnkipubSubDeck.fromLocalID(localDeckID)
+    server = connectionHandler(serverURL, username, password)
+    remoteDeck = server.push_deck(localDeckToPush)
+    remoteDeck.save()

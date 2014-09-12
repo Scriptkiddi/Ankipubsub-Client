@@ -58,6 +58,7 @@ class connectionHandler(object):
             url = self.url+"/push/deck"
 
         # Führe Post aus
+        payload
         deckResponse = self.session.post(url,
                                          data=json.dumps(payload),
                                          headers=headers).json()

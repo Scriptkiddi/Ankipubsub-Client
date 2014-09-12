@@ -49,7 +49,7 @@ class AnkipubSubModel(UserDict):
         #if not create new
 
 
-        #Possiblitys for existing 
+        #Possiblitys for existing
         #It exists on the server so create
         #It exists localy so update
         #if not self.get('localID'): #We dont have a localID for so it has to come from the server we create it

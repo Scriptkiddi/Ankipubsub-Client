@@ -29,7 +29,7 @@ class AnkipubSubDeck(UserDict):
 
     @classmethod
     def fromJsonObject(cls, deck):
-        lastChange = convertToDatetime(deck.get('lastChange'))
+        lastChange = convertToDatetime(str(deck.get('lastChange')))
         return cls(deck.get('notes'),
                    deck.get('models'),
                    deck.get('name'),
