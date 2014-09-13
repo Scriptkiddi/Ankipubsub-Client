@@ -112,6 +112,15 @@ def addUserToReadGroup(newUserName,
     server.addUserToReadGroup(newUserName, RemoteDeckID)
 
 
+def removeUserFromReadGroup(removeUserName,
+                            RemoteDeckID,
+                            serverURL,
+                            username,
+                            password):
+    server = connectionHandler(serverURL, username, password)
+    server.removeUserFromReadGroup(removeUserName, RemoteDeckID)
+
+
 def addUserToWriteGroup(newUserName,
                         RemoteDeckID,
                         serverURL,
@@ -121,6 +130,15 @@ def addUserToWriteGroup(newUserName,
     server.addUserToWriteGroup(newUserName, RemoteDeckID)
 
 
+def removeUserFromWriteGroup(removeUserName,
+                             RemoteDeckID,
+                             serverURL,
+                             username,
+                             password):
+    server = connectionHandler(serverURL, username, password)
+    server.removeUserFromWriteGroup(removeUserName, RemoteDeckID)
+
+
 def addUserToAdminGroup(newUserName,
                         RemoteDeckID,
                         serverURL,
@@ -128,6 +146,15 @@ def addUserToAdminGroup(newUserName,
                         password):
     server = connectionHandler(serverURL, username, password)
     server.addUserToAdminGroup(newUserName, RemoteDeckID)
+
+
+def removeUserFromAdminGroup(removeUserName,
+                             RemoteDeckID,
+                             serverURL,
+                             username,
+                             password):
+    server = connectionHandler(serverURL, username, password)
+    server.removeUserFromAdminGroup(removeUserName, RemoteDeckID)
 
 
 def getReadGroup(RemoteDeckID, serverURL, username, password):

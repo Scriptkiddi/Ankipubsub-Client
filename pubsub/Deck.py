@@ -92,7 +92,10 @@ class AnkipubSubDeck(UserDict):
             change on the server
             """
             ankiNotesByDate = sorted(ankiNotes, key=lambda note: note.mod)
-            lastChange = datetime.fromtimestamp(ankiNotesByDate.pop().mod)
+            if not len(ankiNotesByDate) == 0:
+                lastChange = datetime.fromtimestamp(ankiNotesByDate.pop().mod)
+            else:
+                lastChange = datetime.today()
             creationDate = None
             remoteID = getRemoteDeckID(localDeckID)
             return cls(notes,

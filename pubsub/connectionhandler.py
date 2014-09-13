@@ -151,12 +151,27 @@ class connectionHandler(object):
         r = self.session.post(self.url+'/user/add/read/'+str(remoteDeckID)+'/'+str(newUserName))
         self.logout()
 
+    def removeUserFromReadGroup(self, newUserName, remoteDeckID):
+        self.login()
+        r = self.session.post(self.url+'/user/remove/read/'+str(remoteDeckID)+'/'+str(newUserName))
+        self.logout()
+
     def addUserToWriteGroup(self, newUserName, remoteDeckID):
         self.login()
         r = self.session.post(self.url+'/user/add/write/'+str(remoteDeckID)+'/'+str(newUserName))
         self.logout()
 
+    def removeUserFromWriteGroup(self, newUserName, remoteDeckID):
+        self.login()
+        r = self.session.post(self.url+'/user/remove/write/'+str(remoteDeckID)+'/'+str(newUserName))
+        self.logout()
+
     def addUserToAdminGroup(self, newUserName, remoteDeckID):
         self.login()
         r = self.session.post(self.url+'/user/add/admin/'+str(remoteDeckID)+'/'+str(newUserName))
+        self.logout()
+
+    def removeUserFromAdminGroup(self, newUserName, remoteDeckID):
+        self.login()
+        r = self.session.post(self.url+'/user/remove/admin/'+str(remoteDeckID)+'/'+str(newUserName))
         self.logout()

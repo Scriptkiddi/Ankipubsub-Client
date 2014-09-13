@@ -4,6 +4,12 @@ from datetime import datetime
 from aqt import mw
 
 
+def deleteAnkiPubSubDeck(remoteID):
+    mw.col.db.scalar("DELETE FROM DeckIDs WHERE RemoteID = ?", remoteID)
+    mw.col.db.scalar("DELETE FROM ModelIDs WHERE RemoteDeckID = ?", remoteID)
+    mw.col.db.scalar("DELETE FROM NoteIDs WHERE RemoteDeckID = ?", remoteID)
+    mw.col.save()
+
 def getAllAnkiPubSubDecks():
     return mw.col.db.all("SELECT RemoteID, LocalID FROM DeckIDs")
 
