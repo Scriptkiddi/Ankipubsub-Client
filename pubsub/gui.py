@@ -144,8 +144,9 @@ def ankiDeckManagerSetup():
 
 def ankiPubSubSettingsSave(form):
     # f.ui.username
-    mw.col.conf['pubSubPassword'] = form.ui.username.text()
-    mw.col.conf['pubSubName'] = form.ui.password.text()
+    mw.col.conf['pubSubName'] = form.ui.username.text()
+    mw.col.conf['pubSubPassword'] = form.ui.password.text()
+    form.done(0)
 
 def ankiPubSubSettings():
     f = QDialog()
