@@ -14,7 +14,8 @@ from database import (sync,
                       addUserToWriteGroup,
                       removeUserFromWriteGroup,
                       addUserToAdminGroup,
-                      removeUserFromAdminGroup
+                      removeUserFromAdminGroup,
+                      createTables
                       )
 from pubsub import util
 from deckmanagerUI import Ui_AnkiPubSubDeckManager
@@ -60,6 +61,7 @@ def share(did):
     d.ui.remoteDeckID.setText(str(util.getRemoteDeckID(did)))
     d.exec_()
 
+
 def addRemoteDeckButton(form):
     remoteID = form.ui.remoteDeckId.text()
     if not len(remoteID) == 24:
@@ -70,9 +72,11 @@ def addRemoteDeckButton(form):
                   mw.col.conf.get('pubSubPassword', ""))
     drawTable(form)
 
+
 def deleteAnkiPubSubDeck(form, remoteID):
     util.deleteAnkiPubSubDeck(remoteID)
     drawTable(form)
+
 
 def drawTable(f):
     table = f.ui.tableWidget
@@ -122,6 +126,7 @@ def drawTable(f):
         table.setItem(i, 0, QTableWidgetItem(str(deck.getName())))
         table.setItem(i, 1, QTableWidgetItem(str(deck.getRemoteID())))
 
+
 def ankiDeckManagerSetup():
     """
     Configure the Ui_Dialog.
@@ -132,7 +137,7 @@ def ankiDeckManagerSetup():
     it to the user.
     """
     # create an cell widget
-
+    createTables()
     f = QDialog()
     f.ui = Ui_AnkiPubSubDeckManager()
     f.ui.setupUi(f)
@@ -143,11 +148,13 @@ def ankiDeckManagerSetup():
     f.ui.ankiPubSubAddDeck.clicked.connect(partial(addRemoteDeckButton, form=f))
     f.exec_()
 
+
 def ankiPubSubSettingsSave(form):
     # f.ui.username
     mw.col.conf['pubSubName'] = form.ui.username.text()
     mw.col.conf['pubSubPassword'] = form.ui.password.text()
     form.done(0)
+
 
 def ankiPubSubSettings():
     f = QDialog()
