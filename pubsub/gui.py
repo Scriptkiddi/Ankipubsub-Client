@@ -8,7 +8,7 @@ import aqt
 from permissions import Ui_Dialog
 from database import sync, addRemoteDeck, download, getAccessGroups, addUserToReadGroup, addUserToWriteGroup, addUserToAdminGroup
 from pubsub import util
-from deckmanagerUI import AnkiPubSubDeckManagerUI
+from deckmanagerUI import Ui_AnkiPubSubDeckManager
 from deck_settings import Ui_Form
 from PyQt4 import QtGui
 from Deck import AnkipubSubDeck
@@ -50,6 +50,14 @@ def share(did):
     d.ui.remoteDeckID.setText(str(util.getRemoteDeckID(did)))
     d.exec_()
 
+def addRemoteDeckButton(form):
+    remoteID = form.ui.remoteDeckId.text()
+    if not len(remoteID) == 24:
+        showInfo('This seems is not a valid Remote Deck ID please try again')
+        return
+    addRemoteDeck(remoteID, "http://144.76.172.187:5000/v0",
+                  mw.col.conf.get('pubSubName', ""),
+                  mw.col.conf.get('pubSubPassword', ""))
 
 def ankiDeckManagerSetup():
     """
@@ -63,7 +71,7 @@ def ankiDeckManagerSetup():
     # create an cell widget
 
     f = QDialog()
-    f.ui = AnkiPubSubDeckManagerUI()
+    f.ui = Ui_AnkiPubSubDeckManager()
     f.ui.setupUi(f)
 
     f.ui.ankiPubSubSettings.clicked.connect(lambda: ankiPubSubSettings())
@@ -112,6 +120,8 @@ def ankiDeckManagerSetup():
         table.setCellWidget(i, 2, widget)
         table.setItem(i, 0, QTableWidgetItem(str(deck.getName())))
         table.setItem(i, 1, QTableWidgetItem(str(deck.getRemoteID())))
+
+    f.ui.ankiPubSubAddDeck.clicked.connect(partial(addRemoteDeckButton, form=f))
     f.exec_()
 
 def ankiPubSubSettingsSave(form):

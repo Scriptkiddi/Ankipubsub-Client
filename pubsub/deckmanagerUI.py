@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'deckmanager.ui'
 #
-# Created: Thu Sep 11 17:03:17 2014
+# Created: Sat Sep 13 12:46:27 2014
 #      by: PyQt4 UI code generator 4.11.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -23,17 +23,15 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class AnkiPubSubDeckManagerUI(object):
-    def setupUi(self, Form):
-        Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(506, 480)
+class Ui_AnkiPubSubDeckManager(object):
+    def setupUi(self, AnkiPubSubDeckManager):
+        AnkiPubSubDeckManager.setObjectName(_fromUtf8("AnkiPubSubDeckManager"))
+        AnkiPubSubDeckManager.resize(506, 480)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("images/Logo.jpg")),
-                       QtGui.QIcon.Normal,
-                       QtGui.QIcon.Off)
-        Form.setWindowIcon(icon)
-        self.label = QtGui.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(0, 10, 351, 31))
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("images/Logo.jpg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        AnkiPubSubDeckManager.setWindowIcon(icon)
+        self.label = QtGui.QLabel(AnkiPubSubDeckManager)
+        self.label.setGeometry(QtCore.QRect(20, 10, 351, 31))
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Century Schoolbook L"))
         font.setPointSize(18)
@@ -41,38 +39,38 @@ class AnkiPubSubDeckManagerUI(object):
         font.setWeight(75)
         self.label.setFont(font)
         self.label.setObjectName(_fromUtf8("label"))
-        self.ankiPubSubSettings = QtGui.QPushButton(Form)
+        self.ankiPubSubSettings = QtGui.QPushButton(AnkiPubSubDeckManager)
         self.ankiPubSubSettings.setGeometry(QtCore.QRect(380, 10, 92, 27))
         self.ankiPubSubSettings.setObjectName(_fromUtf8("ankiPubSubSettings"))
-        self.line = QtGui.QFrame(Form)
+        self.line = QtGui.QFrame(AnkiPubSubDeckManager)
         self.line.setGeometry(QtCore.QRect(-10, 40, 531, 20))
         self.line.setAutoFillBackground(False)
         self.line.setFrameShadow(QtGui.QFrame.Sunken)
         self.line.setFrameShape(QtGui.QFrame.HLine)
         self.line.setFrameShadow(QtGui.QFrame.Sunken)
         self.line.setObjectName(_fromUtf8("line"))
-        self.groupBox = QtGui.QGroupBox(Form)
-        self.groupBox.setGeometry(QtCore.QRect(10, 340, 511, 141))
-        self.groupBox.setObjectName(_fromUtf8("groupBox"))
-        self.lineEdit = QtGui.QLineEdit(self.groupBox)
-        self.lineEdit.setGeometry(QtCore.QRect(10, 40, 381, 25))
-        self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
-        self.lineEdit_2 = QtGui.QLineEdit(self.groupBox)
-        self.lineEdit_2.setGeometry(QtCore.QRect(10, 90, 151, 25))
-        self.lineEdit_2.setObjectName(_fromUtf8("lineEdit_2"))
-        self.label_2 = QtGui.QLabel(self.groupBox)
+        self.newDeckGroupBox = QtGui.QGroupBox(AnkiPubSubDeckManager)
+        self.newDeckGroupBox.setGeometry(QtCore.QRect(10, 340, 511, 141))
+        self.newDeckGroupBox.setObjectName(_fromUtf8("newDeckGroupBox"))
+        self.remoteDeckId = QtGui.QLineEdit(self.newDeckGroupBox)
+        self.remoteDeckId.setGeometry(QtCore.QRect(10, 40, 381, 25))
+        self.remoteDeckId.setObjectName(_fromUtf8("remoteDeckId"))
+        self.readPW = QtGui.QLineEdit(self.newDeckGroupBox)
+        self.readPW.setGeometry(QtCore.QRect(10, 90, 151, 25))
+        self.readPW.setObjectName(_fromUtf8("readPW"))
+        self.label_2 = QtGui.QLabel(self.newDeckGroupBox)
         self.label_2.setGeometry(QtCore.QRect(10, 20, 121, 16))
         self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.label_3 = QtGui.QLabel(self.groupBox)
+        self.label_3 = QtGui.QLabel(self.newDeckGroupBox)
         self.label_3.setGeometry(QtCore.QRect(10, 70, 171, 16))
         self.label_3.setObjectName(_fromUtf8("label_3"))
-        self.label_4 = QtGui.QLabel(self.groupBox)
+        self.label_4 = QtGui.QLabel(self.newDeckGroupBox)
         self.label_4.setGeometry(QtCore.QRect(190, 70, 181, 16))
         self.label_4.setObjectName(_fromUtf8("label_4"))
-        self.lineEdit_3 = QtGui.QLineEdit(self.groupBox)
-        self.lineEdit_3.setGeometry(QtCore.QRect(190, 90, 201, 25))
-        self.lineEdit_3.setObjectName(_fromUtf8("lineEdit_3"))
-        self.ankiPubSubAddDeck = QtGui.QPushButton(self.groupBox)
+        self.writePW = QtGui.QLineEdit(self.newDeckGroupBox)
+        self.writePW.setGeometry(QtCore.QRect(190, 90, 201, 25))
+        self.writePW.setObjectName(_fromUtf8("writePW"))
+        self.ankiPubSubAddDeck = QtGui.QPushButton(self.newDeckGroupBox)
         self.ankiPubSubAddDeck.setGeometry(QtCore.QRect(410, 40, 81, 81))
         self.ankiPubSubAddDeck.setText(_fromUtf8(""))
         icon1 = QtGui.QIcon()
@@ -80,20 +78,21 @@ class AnkiPubSubDeckManagerUI(object):
         self.ankiPubSubAddDeck.setIcon(icon1)
         self.ankiPubSubAddDeck.setIconSize(QtCore.QSize(81, 81))
         self.ankiPubSubAddDeck.setObjectName(_fromUtf8("ankiPubSubAddDeck"))
-        self.tableWidget = QtGui.QTableWidget(Form)
+        self.tableWidget = QtGui.QTableWidget(AnkiPubSubDeckManager)
         self.tableWidget.setGeometry(QtCore.QRect(0, 60, 501, 281))
         self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(AnkiPubSubDeckManager)
+        QtCore.QMetaObject.connectSlotsByName(AnkiPubSubDeckManager)
 
-    def retranslateUi(self, Form):
-        Form.setWindowTitle(_translate("Form", "AnkiPubSub Deck Manager", None))
-        self.label.setText(_translate("Form", "AnkiPubSub Deck Manager", None))
-        self.ankiPubSubSettings.setText(_translate("Form", "Settings", None))
-        self.groupBox.setTitle(_translate("Form", "Subscribe to a new Deck:", None))
-        self.label_2.setText(_translate("Form", "Add the DeckID:", None))
-        self.label_3.setText(_translate("Form", "Add reading permission:", None))
-        self.label_4.setText(_translate("Form", "Add writing permission:", None))
+    def retranslateUi(self, AnkiPubSubDeckManager):
+        AnkiPubSubDeckManager.setWindowTitle(_translate("AnkiPubSubDeckManager", "AnkiPubSub Deck Manager", None))
+        self.label.setText(_translate("AnkiPubSubDeckManager", "AnkiPubSub Deck Manager", None))
+        self.ankiPubSubSettings.setText(_translate("AnkiPubSubDeckManager", "Settings", None))
+        self.newDeckGroupBox.setTitle(_translate("AnkiPubSubDeckManager", "Subscribe to a new Deck:", None))
+        self.label_2.setText(_translate("AnkiPubSubDeckManager", "Add the DeckID:", None))
+        self.label_3.setText(_translate("AnkiPubSubDeckManager", "Add reading permission:", None))
+        self.label_4.setText(_translate("AnkiPubSubDeckManager", "Add writing permission:", None))
+
