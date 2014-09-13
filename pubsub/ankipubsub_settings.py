@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ankipubsub_settings.ui'
 #
-# Created: Fri Sep 12 16:10:57 2014
+# Created: Sat Sep 13 12:30:20 2014
 #      by: PyQt4 UI code generator 4.11.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -27,29 +27,30 @@ class AnkiPubSubSettingsUI(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(173, 169)
-        self.pushButton = QtGui.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(30, 120, 92, 27))
-        self.pushButton.setObjectName(_fromUtf8("pushButton"))
+        self.Login = QtGui.QPushButton(Form)
+        self.Login.setGeometry(QtCore.QRect(30, 120, 92, 27))
+        self.Login.setObjectName(_fromUtf8("Login"))
         self.label = QtGui.QLabel(Form)
         self.label.setGeometry(QtCore.QRect(10, 20, 171, 16))
         self.label.setObjectName(_fromUtf8("label"))
         self.label_2 = QtGui.QLabel(Form)
         self.label_2.setGeometry(QtCore.QRect(10, 70, 141, 16))
         self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.lineEdit = QtGui.QLineEdit(Form)
-        self.lineEdit.setGeometry(QtCore.QRect(20, 40, 113, 25))
-        self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
-        self.lineEdit_2 = QtGui.QLineEdit(Form)
-        self.lineEdit_2.setGeometry(QtCore.QRect(20, 90, 113, 25))
-        self.lineEdit_2.setObjectName(_fromUtf8("lineEdit_2"))
+        self.username = QtGui.QLineEdit(Form)
+        self.username.setGeometry(QtCore.QRect(20, 40, 113, 25))
+        self.username.setObjectName(_fromUtf8("username"))
+        self.password = QtGui.QLineEdit(Form)
+        self.password.setGeometry(QtCore.QRect(20, 90, 113, 25))
+        self.password.setObjectName(_fromUtf8("password"))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "AnkiPubSub Settings", None))
-        self.pushButton.setText(_translate("Form", "Login", None))
+        self.Login.setText(_translate("Form", "Login", None))
         self.label.setText(_translate("Form", "Insert your Username:", None))
         self.label_2.setText(_translate("Form", "Insert your Password:", None))
-        self.lineEdit.setText(_translate("Form", "Username", None))
-        self.lineEdit_2.setText(_translate("Form", "Password", None))
+        self.username.setText(_translate("Form", "Username", None))
+        self.password.setText(_translate("Form", "Password", None))
+

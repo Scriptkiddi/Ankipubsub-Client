@@ -185,11 +185,18 @@ def ankiDeckManagerSetup():
         table.setItem(i, 1, QTableWidgetItem(str(deck.getRemoteID())))
     f.exec_()
 
+def ankiPubSubSettingsSave(form):
+    # f.ui.username
+    mw.col.conf['pubSubPassword'] = form.ui.username.text()
+    mw.col.conf['pubSubName'] = form.ui.password.text()
 
 def ankiPubSubSettings():
     f = QDialog()
     f.ui = AnkiPubSubSettingsUI()
     f.ui.setupUi(f)
+    f.ui.username.setText(mw.col.conf.get('pubSubName', ""))
+    f.ui.password.setText(mw.col.conf.get('pubSubPassword', ""))
+    f.ui.Login.clicked.connect(partial(ankiPubSubSettingsSave, form=f))
     f.exec_()
 
 
@@ -332,4 +339,3 @@ DeckBrowser._drawButtons = wrap(DeckBrowser._drawButtons,
 DeckBrowser._linkHandler = wrap(DeckBrowser._linkHandler,
                                 ankiPubSubLinkHandler,
                                 pos='around')
-Preferences.setupNetwork = wrap(Preferences.setupNetwork, setupAnkiPubSub)
