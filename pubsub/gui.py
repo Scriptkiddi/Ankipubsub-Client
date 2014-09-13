@@ -68,7 +68,7 @@ def addRemoteDeckButton(form):
     addRemoteDeck(remoteID, "http://144.76.172.187:5000/v0",
                   mw.col.conf.get('pubSubName', ""),
                   mw.col.conf.get('pubSubPassword', ""))
-    drawTable()
+    drawTable(form)
 
 def deleteAnkiPubSubDeck(form, remoteID):
     util.deleteAnkiPubSubDeck(remoteID)
