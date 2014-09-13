@@ -257,7 +257,10 @@ def ankiDeckSettings(did):
                              mw.col.conf.get('pubSubName', ""),
                              mw.col.conf.get('pubSubPassword', ""))
     #users = uniqueList(groups.get('readGroup').append(groups.get('writeGroup').append(groups.get('adminGroup'))))
-    users = uniqueList(groups.get('readGroup') + groups.get('writeGroup') + groups.get('adminGroup'))
+    readGroup = groups.get('readGroup') if groups.get('readGroup') else []
+    writeGroup = groups.get('writeGroup') if groups.get('writeGroup') else []
+    adminGroup = groups.get('adminGroup') if groups.get('adminGroup') else []
+    users = uniqueList(readGroup + writeGroup + adminGroup)
 
     table.setColumnCount(4)
     table.setRowCount(len(users))
@@ -265,11 +268,11 @@ def ankiDeckSettings(did):
         isAdmin = QtGui.QCheckBox(table)
         canWrite = QtGui.QCheckBox(table)
         canRead = QtGui.QCheckBox(table)
-        if user in groups.get('readGroup'):
+        if user in readGroup:
             canRead.setChecked(True)
-        if user in groups.get('writeGroup'):
+        if user in writeGroup:
             canWrite.setChecked(True)
-        if user in groups.get('adminGroup'):
+        if user in adminGroup:
             isAdmin.setChecked(True)
 
         table.setItem(i, 0, QTableWidgetItem(str(user)))
