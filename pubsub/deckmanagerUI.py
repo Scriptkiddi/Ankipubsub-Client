@@ -28,7 +28,9 @@ class AnkiPubSubDeckManagerUI(object):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(506, 480)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("images/Logo.jpg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("images/Logo.jpg")),
+                       QtGui.QIcon.Normal,
+                       QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
         self.label = QtGui.QLabel(Form)
         self.label.setGeometry(QtCore.QRect(0, 10, 351, 31))
@@ -95,4 +97,3 @@ class AnkiPubSubDeckManagerUI(object):
         self.label_2.setText(_translate("Form", "Add the DeckID:", None))
         self.label_3.setText(_translate("Form", "Add reading permission:", None))
         self.label_4.setText(_translate("Form", "Add writing permission:", None))
-

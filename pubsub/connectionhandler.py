@@ -145,3 +145,18 @@ class connectionHandler(object):
         r = self.session.get(self.url+'/users/get/accessGroups/'+str(remoteDeckID))
         self.logout()
         return r.json()
+
+    def addUserToReadGroup(self, newUserName, remoteDeckID):
+        self.login()
+        r = self.session.post(self.url+'/user/add/read/'+str(remoteDeckID)+'/'+str(newUserName))
+        self.logout()
+
+    def addUserToWriteGroup(self, newUserName, remoteDeckID):
+        self.login()
+        r = self.session.post(self.url+'/user/add/write/'+str(remoteDeckID)+'/'+str(newUserName))
+        self.logout()
+
+    def addUserToAdminGroup(self, newUserName, remoteDeckID):
+        self.login()
+        r = self.session.post(self.url+'/user/add/admin/'+str(remoteDeckID)+'/'+str(newUserName))
+        self.logout()

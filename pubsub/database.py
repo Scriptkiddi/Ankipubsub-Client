@@ -103,10 +103,38 @@ def upload(localDeckID, serverURL, username, password):
     remoteDeck.save()
 
 
-def getReadGroup(localDeckID, serverURL, username, password):
+def addUserToReadGroup(newUserName,
+                       RemoteDeckID,
+                       serverURL,
+                       username,
+                       password):
     server = connectionHandler(serverURL, username, password)
-    server.getReadGroup(localDeckID)
+    server.addUserToReadGroup(newUserName, RemoteDeckID)
 
-def getAccessGroups(localDeckID, serverURL, username, password):
+
+def addUserToWriteGroup(newUserName,
+                        RemoteDeckID,
+                        serverURL,
+                        username,
+                        password):
     server = connectionHandler(serverURL, username, password)
-    return server.getAccessGroups(localDeckID)
+    server.addUserToWriteGroup(newUserName, RemoteDeckID)
+
+
+def addUserToAdminGroup(newUserName,
+                        RemoteDeckID,
+                        serverURL,
+                        username,
+                        password):
+    server = connectionHandler(serverURL, username, password)
+    server.addUserToAdminGroup(newUserName, RemoteDeckID)
+
+
+def getReadGroup(RemoteDeckID, serverURL, username, password):
+    server = connectionHandler(serverURL, username, password)
+    server.getReadGroup(RemoteDeckID)
+
+
+def getAccessGroups(RemoteDeckID, serverURL, username, password):
+    server = connectionHandler(serverURL, username, password)
+    return server.getAccessGroups(RemoteDeckID)

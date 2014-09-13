@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>AnkiPubSub Settings</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="Login">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -52,7 +52,7 @@
     <string>Insert your Password:</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="username">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -65,7 +65,7 @@
     <string>Username</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="password">
    <property name="geometry">
     <rect>
      <x>20</x>

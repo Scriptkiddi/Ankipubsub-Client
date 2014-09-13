@@ -53,4 +53,3 @@ class AnkiPubSubSettingsUI(object):
         self.label_2.setText(_translate("Form", "Insert your Password:", None))
         self.lineEdit.setText(_translate("Form", "Username", None))
         self.lineEdit_2.setText(_translate("Form", "Password", None))
-
