@@ -8,6 +8,7 @@ from permissions import Ui_Dialog
 from database import (sync,
                       addRemoteDeck,
                       download,
+                      upload,
                       getAccessGroups,
                       addUserToReadGroup,
                       removeUserFromReadGroup,
@@ -27,21 +28,22 @@ from functools import partial
 from Queue import Queue
 
 
-def myOnShared(self):
-    """Add a button to the shared menu."""
-    choice = askUserDialog("Choose source", [QPushButton("AnkiWeb"), QPushButton("PubSub")]).run()
-    if choice == "AnkiWeb":
-            openLink(aqt.appShared+"decks/")
-    elif choice == "PubSub":
-            remoteDid = getOnlyText("Provide a remote deck-ID")
-            if remoteDid:
-                print("remoteDid = " + remoteDid)
-                try:
-                    addRemoteDeck(remoteDid, "http://144.76.172.187:5000/v0",
-                                  mw.col.conf.get('pubSubName', ""),
-                                  mw.col.conf.get('pubSubPassword', ""))
-                except Exception:
-                    showInfo("You entered a wrong user name or password please try again.")
+
+
+def myShowOptions(self, did):
+    """Overwrite the standard options."""
+    #standard options:
+    m = QMenu(self.mw)
+    a = m.addAction(_("Rename"))
+    a.connect(a, SIGNAL("triggered()"), lambda did=did: self._reankipubsubName(did))
+    a = m.addAction(_("Options"))
+    a.connect(a, SIGNAL("triggered()"), lambda did=did: self._options(did))
+    a = m.addAction(_("Delete"))
+    a.connect(a, SIGNAL("triggered()"), lambda did=did: self._delete(did))
+    #share with pubsub
+    a = m.addAction(_("Share with PubSub"))
+    a.connect(a, SIGNAL("triggered()"), lambda did=did: share(did))
+    m.exec_(QCursor.pos())
 
 
 def share(did):
@@ -104,11 +106,11 @@ def drawTable(f):
         btnDownload.setGeometry(30, 0, 30, 30)
         # TODO FIX TO PARTIAL
         btnDownload.clicked.connect(
-            lambda: download(did,
-                             mw.col.conf.get('ankipubsubServer',
-                                             "http://144.76.172.187:5000/v0"),
-                             mw.col.conf.get('pubSubName', ""),
-                             mw.col.conf.get('pubSubPassword', "")))
+            partial(download, did,
+                    mw.col.conf.get('ankipubsubServer',
+                                    "http://144.76.172.187:5000/v0"),
+                    mw.col.conf.get('pubSubName', ""),
+                    mw.col.conf.get('pubSubPassword', "")))
         btnDownload.setIcon(QIcon('../../addons/pubsub/images/Download-Resized.jpg'))
         btnDownload.setIconSize(QSize(25, 25))
 
@@ -116,6 +118,12 @@ def drawTable(f):
         btnUpload.setGeometry(60, 0, 30, 30)
         btnUpload.setIcon(QIcon('../../addons/pubsub/images/Upload-Resized.jpg'))
         btnUpload.setIconSize(QSize(25, 25))
+        btnUpload.clicked.connect(
+            partial(upload, did,
+                    mw.col.conf.get('ankipubsubServer',
+                                    "http://144.76.172.187:5000/v0"),
+                    mw.col.conf.get('pubSubName', ""),
+                    mw.col.conf.get('pubSubPassword', "")))
 
         btnSettings = QPushButton(widget)
         btnSettings.setGeometry(90, 0, 30, 30)
@@ -355,3 +363,4 @@ DeckBrowser._drawButtons = wrap(DeckBrowser._drawButtons,
 DeckBrowser._linkHandler = wrap(DeckBrowser._linkHandler,
                                 ankiPubSubLinkHandler,
                                 pos='around')
+DeckBrowser._showOptions = myShowOptions
