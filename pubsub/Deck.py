@@ -58,7 +58,9 @@ class AnkipubSubDeck(UserDict):
 
             ankiNotes = []
             for cardID in ankiCardIDs:
-                ankiNotes.append(Note(col, None, Card(col, cardID).nid))
+                note = Note(col, None, Card(col, cardID).nid)
+                if note in ankiNotes:
+                    ankiNotes.append(note)
             modelsDic = {}
             notes = []
 
