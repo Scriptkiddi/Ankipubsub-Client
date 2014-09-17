@@ -186,7 +186,7 @@ def addUser(table):
     table.setCellWidget(i, 3, isAdmin)
 
 
-def deckSettingsSave(table, users, did, changes):
+def deckSettingsSave(table, users, did, changes, form):
     # If we have more rows then users we added a User to the Deck
     if table.rowCount() > len(users):
         for i in range(0, table.rowCount()):
@@ -253,6 +253,7 @@ def deckSettingsSave(table, users, did, changes):
                                                          "http://144.76.172.187:5000/v0"),
                                         mw.col.conf.get('pubSubName', ""),
                                         mw.col.conf.get('pubSubPassword', ""))
+    form.done(0)
 
 
 def uniqueList(seq):
@@ -312,7 +313,7 @@ def ankiDeckSettings(did):
 
     f.ui.AddUser.clicked.connect(lambda: addUser(table))
     f.ui.Abort.clicked.connect(lambda: f.done(0))
-    f.ui.Save.clicked.connect(lambda: deckSettingsSave(table, users, did, changes))
+    f.ui.Save.clicked.connect(lambda: deckSettingsSave(table, users, did, changes, form))
     f.exec_()
 
 
