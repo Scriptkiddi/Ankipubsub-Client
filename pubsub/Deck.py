@@ -6,6 +6,7 @@ from pubsub.util import (getRemoteDeckID,
                          getLocalDeckID,
                          convertToDatetime)
 from aqt import mw
+from aqt.utils import askUserDialog, openLink, showInfo, getOnlyText, shortcut
 from Note import AnkipubSubNote
 from Model import AnkipubSubModel
 from anki.notes import Note
@@ -57,10 +58,12 @@ class AnkipubSubDeck(UserDict):
              add it to a list for futher processing"""
 
             ankiNotes = []
+            ankiNoteIds = []
             for cardID in ankiCardIDs:
-                note = Note(col, None, Card(col, cardID).nid)
-                if note in ankiNotes:
-                    ankiNotes.append(note)
+                nid = Card(col, cardID).nid
+                if nid not in ankiNoteIds:
+                    ankiNoteIds.append(nid)
+                    ankiNotes.append(Note(col, None, nid))
             modelsDic = {}
             notes = []
 
