@@ -313,7 +313,7 @@ def ankiDeckSettings(did):
 
     f.ui.AddUser.clicked.connect(lambda: addUser(table))
     f.ui.Abort.clicked.connect(lambda: f.done(0))
-    f.ui.Save.clicked.connect(lambda: deckSettingsSave(table, users, did, changes, form))
+    f.ui.Save.clicked.connect(lambda: deckSettingsSave(table, users, did, changes, f))
     f.exec_()
 
 
