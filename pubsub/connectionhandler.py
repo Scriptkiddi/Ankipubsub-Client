@@ -7,7 +7,7 @@ from Deck import AnkipubSubDeck
 from Note import AnkipubSubNote
 from Model import AnkipubSubModel
 from copy import deepcopy
-from Errors import AuthError
+from Errors import AuthError, NotFoundError
 
 
 class connectionHandler(object):
@@ -61,9 +61,14 @@ class connectionHandler(object):
         # Führe Post aus
         deckResponse = self.session.post(url,
                                          data=json.dumps(payload),
-                                         headers=headers).json()
+                                         headers=headers)
+        if not deckResponse.status_code == requests.codes.ok:
+            if deckResponse.status_code == 401:
+                raise AuthError(deckResponse.json().get('error').get('message'))
+            elif deckResponse.status_code == 404:
+                raise NotFoundError(deckResponse.json().get('error').get('message'))
 
-        deck = AnkipubSubDeck.fromJsonObject(deckResponse)
+        deck = AnkipubSubDeck.fromJsonObject(deckResponse.json())
 
         self.logout()
         newNotes = []
@@ -101,8 +106,9 @@ class connectionHandler(object):
         # prüfe ob ne valid anfrage zurück kam
         if not deckResponse.status_code == requests.codes.ok:
             if deckResponse.status_code == 401:
-                raise AuthError(deckResponse.get('error').get('message'))
-
+                raise AuthError(deckResponse.json().get('error').get('message'))
+            elif deckResponse.status_code == 404:
+                raise NotFoundError(deckResponse.json().get('error').get('message'))
         # Erzeuge aus der JSOn antwort ein Deck
         deck = AnkipubSubDeck.fromJsonObject(deckResponse.json())
 

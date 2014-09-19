@@ -1,5 +1,8 @@
 class AuthError(Exception):
     def __init__(self, message):
+        Exception.__init__(self, message)
 
-        # Call the base class constructor with the parameters it needs
+
+class NotFoundError(Exception):
+    def __init__(self, message):
         Exception.__init__(self, message)

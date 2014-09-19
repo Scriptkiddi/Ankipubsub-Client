@@ -119,7 +119,7 @@ def drawTable(f):
         btnUpload.setIcon(QIcon('../../addons/pubsub/images/Upload-Resized.jpg'))
         btnUpload.setIconSize(QSize(25, 25))
         btnUpload.clicked.connect(
-            partial(sync, did,
+            partial(upload, did,
                     mw.col.conf.get('ankipubsubServer',
                                     "http://144.76.172.187:5000/v0"),
                     mw.col.conf.get('pubSubName', ""),

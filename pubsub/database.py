@@ -4,7 +4,7 @@
 from aqt import mw
 from Deck import AnkipubSubDeck
 from connectionhandler import connectionHandler
-from Errors import AuthError
+from Errors import AuthError, NotFoundError
 from aqt.utils import showInfo
 
 
@@ -26,7 +26,7 @@ def addRemoteDeck(remoteDeckID, serverURL, username, password):
     # pull the remote Deck from the server with the passed rID
     try:
         remoteDeckPull = server.pull_deck(remoteDeckID)
-    except AuthError as e:
+    except (AuthError, NotFoundError) as e:
         showInfo(e.message)
     print(remoteDeckPull.getNotes())
     # Create the Deck
@@ -96,15 +96,21 @@ def sync(localDeckID, serverURL, username, password, firsttime=True):
 def download(localDeckID, serverURL, username, password):
     localDeckToPush = AnkipubSubDeck.fromLocalID(localDeckID)
     server = connectionHandler(serverURL, username, password)
-    remoteDeckPull = server.pull_deck(localDeckToPush.getRemoteID())
-    remoteDeckPull.save(mw.col, serverURL)
+    try:
+        remoteDeckPull = server.pull_deck(localDeckToPush.getRemoteID())
+        remoteDeckPull.save(mw.col, serverURL)
+    except (AuthError, NotFoundError) as e:
+        showInfo(e.message)
 
 
 def upload(localDeckID, serverURL, username, password):
     localDeckToPush = AnkipubSubDeck.fromLocalID(localDeckID)
     server = connectionHandler(serverURL, username, password)
-    remoteDeck = server.push_deck(localDeckToPush)
-    remoteDeck.save()
+    try:
+        remoteDeck = server.push_deck(localDeckToPush)
+        remoteDeck.save(mw.col, serverURL)
+    except (AuthError, NotFoundError) as e:
+        showInfo(e.message)
 
 
 def addUserToReadGroup(newUserName,
@@ -113,7 +119,10 @@ def addUserToReadGroup(newUserName,
                        username,
                        password):
     server = connectionHandler(serverURL, username, password)
-    server.addUserToReadGroup(newUserName, RemoteDeckID)
+    try:
+        server.addUserToReadGroup(newUserName, RemoteDeckID)
+    except (AuthError, NotFoundError) as e:
+        showInfo(e.message)
 
 
 def removeUserFromReadGroup(removeUserName,
@@ -122,7 +131,10 @@ def removeUserFromReadGroup(removeUserName,
                             username,
                             password):
     server = connectionHandler(serverURL, username, password)
-    server.removeUserFromReadGroup(removeUserName, RemoteDeckID)
+    try:
+        server.removeUserFromReadGroup(removeUserName, RemoteDeckID)
+    except (AuthError, NotFoundError) as e:
+        showInfo(e.message)
 
 
 def addUserToWriteGroup(newUserName,
@@ -131,7 +143,10 @@ def addUserToWriteGroup(newUserName,
                         username,
                         password):
     server = connectionHandler(serverURL, username, password)
-    server.addUserToWriteGroup(newUserName, RemoteDeckID)
+    try:
+        server.addUserToWriteGroup(newUserName, RemoteDeckID)
+    except (AuthError, NotFoundError) as e:
+        showInfo(e.message)
 
 
 def removeUserFromWriteGroup(removeUserName,
@@ -140,7 +155,10 @@ def removeUserFromWriteGroup(removeUserName,
                              username,
                              password):
     server = connectionHandler(serverURL, username, password)
-    server.removeUserFromWriteGroup(removeUserName, RemoteDeckID)
+    try:
+        server.removeUserFromWriteGroup(removeUserName, RemoteDeckID)
+    except (AuthError, NotFoundError) as e:
+        showInfo(e.message)
 
 
 def addUserToAdminGroup(newUserName,
@@ -149,7 +167,10 @@ def addUserToAdminGroup(newUserName,
                         username,
                         password):
     server = connectionHandler(serverURL, username, password)
-    server.addUserToAdminGroup(newUserName, RemoteDeckID)
+    try:
+        server.addUserToAdminGroup(newUserName, RemoteDeckID)
+    except (AuthError, NotFoundError) as e:
+        showInfo(e.message)
 
 
 def removeUserFromAdminGroup(removeUserName,
@@ -158,14 +179,24 @@ def removeUserFromAdminGroup(removeUserName,
                              username,
                              password):
     server = connectionHandler(serverURL, username, password)
-    server.removeUserFromAdminGroup(removeUserName, RemoteDeckID)
+    try:
+        server.removeUserFromAdminGroup(removeUserName, RemoteDeckID)
+    except (AuthError, NotFoundError) as e:
+        showInfo(e.message)
 
 
 def getReadGroup(RemoteDeckID, serverURL, username, password):
     server = connectionHandler(serverURL, username, password)
-    server.getReadGroup(RemoteDeckID)
+    try:
+        server.getReadGroup(RemoteDeckID)
+    except (AuthError, NotFoundError) as e:
+        showInfo(e.message)
 
 
 def getAccessGroups(RemoteDeckID, serverURL, username, password):
     server = connectionHandler(serverURL, username, password)
-    return server.getAccessGroups(RemoteDeckID)
+    try:
+        return server.getAccessGroups(RemoteDeckID)
+    except (AuthError, NotFoundError) as e:
+        showInfo(e.message)
+        return None
