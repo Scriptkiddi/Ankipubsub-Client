@@ -4,6 +4,8 @@
 from aqt import mw
 from Deck import AnkipubSubDeck
 from connectionhandler import connectionHandler
+from Errors import AuthError
+from aqt.utils import showInfo
 
 
 def createTables():
@@ -22,8 +24,10 @@ def addRemoteDeck(remoteDeckID, serverURL, username, password):
     server = connectionHandler(serverURL, username, password)
     print('Starting to add a Remote Deck with the id {0}'.format(remoteDeckID))
     # pull the remote Deck from the server with the passed rID
-
-    remoteDeckPull = server.pull_deck(remoteDeckID)
+    try:
+        remoteDeckPull = server.pull_deck(remoteDeckID)
+    except AuthError as e:
+        showInfo(e.message)
     print(remoteDeckPull.getNotes())
     # Create the Deck
     remoteDeckPull.save(mw.col, serverURL)

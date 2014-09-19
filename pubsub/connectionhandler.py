@@ -7,6 +7,7 @@ from Deck import AnkipubSubDeck
 from Note import AnkipubSubNote
 from Model import AnkipubSubModel
 from copy import deepcopy
+from Errors import AuthError
 
 
 class connectionHandler(object):
@@ -99,7 +100,8 @@ class connectionHandler(object):
 
         # prüfe ob ne valid anfrage zurück kam
         if not deckResponse.status_code == requests.codes.ok:
-            return None
+            if deckResponse.status_code == 401:
+                raise AuthError(deckResponse.get('error').get('message'))
 
         # Erzeuge aus der JSOn antwort ein Deck
         deck = AnkipubSubDeck.fromJsonObject(deckResponse.json())
