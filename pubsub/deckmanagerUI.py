@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'deckmanager.ui'
 #
-# Created: Sat Sep 13 12:46:27 2014
-#      by: PyQt4 UI code generator 4.11.1
+# Created: Wed Sep 24 16:34:57 2014
+#      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -31,16 +31,16 @@ class Ui_AnkiPubSubDeckManager(object):
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("images/Logo.jpg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         AnkiPubSubDeckManager.setWindowIcon(icon)
         self.label = QtGui.QLabel(AnkiPubSubDeckManager)
-        self.label.setGeometry(QtCore.QRect(20, 10, 351, 31))
+        self.label.setGeometry(QtCore.QRect(20, 10, 231, 31))
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Century Schoolbook L"))
-        font.setPointSize(18)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.label.setFont(font)
         self.label.setObjectName(_fromUtf8("label"))
         self.ankiPubSubSettings = QtGui.QPushButton(AnkiPubSubDeckManager)
-        self.ankiPubSubSettings.setGeometry(QtCore.QRect(380, 10, 92, 27))
+        self.ankiPubSubSettings.setGeometry(QtCore.QRect(400, 10, 92, 27))
         self.ankiPubSubSettings.setObjectName(_fromUtf8("ankiPubSubSettings"))
         self.line = QtGui.QFrame(AnkiPubSubDeckManager)
         self.line.setGeometry(QtCore.QRect(-10, 40, 531, 20))
@@ -74,7 +74,7 @@ class Ui_AnkiPubSubDeckManager(object):
         self.ankiPubSubAddDeck.setGeometry(QtCore.QRect(410, 40, 81, 81))
         self.ankiPubSubAddDeck.setText(_fromUtf8(""))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("../../addons/pubsub/images/Plus-Resized.jpg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("images/Plus-Resized.jpg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ankiPubSubAddDeck.setIcon(icon1)
         self.ankiPubSubAddDeck.setIconSize(QtCore.QSize(81, 81))
         self.ankiPubSubAddDeck.setObjectName(_fromUtf8("ankiPubSubAddDeck"))
@@ -83,6 +83,9 @@ class Ui_AnkiPubSubDeckManager(object):
         self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
+        self.publishDeck = QtGui.QPushButton(AnkiPubSubDeckManager)
+        self.publishDeck.setGeometry(QtCore.QRect(280, 10, 111, 27))
+        self.publishDeck.setObjectName(_fromUtf8("publishDeck"))
 
         self.retranslateUi(AnkiPubSubDeckManager)
         QtCore.QMetaObject.connectSlotsByName(AnkiPubSubDeckManager)
@@ -95,4 +98,5 @@ class Ui_AnkiPubSubDeckManager(object):
         self.label_2.setText(_translate("AnkiPubSubDeckManager", "Add the DeckID:", None))
         self.label_3.setText(_translate("AnkiPubSubDeckManager", "Add reading permission:", None))
         self.label_4.setText(_translate("AnkiPubSubDeckManager", "Add writing permission:", None))
+        self.publishDeck.setText(_translate("AnkiPubSubDeckManager", "Publish a Deck", None))
 
