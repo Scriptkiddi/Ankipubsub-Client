@@ -22,14 +22,14 @@
     <rect>
      <x>20</x>
      <y>10</y>
-     <width>351</width>
+     <width>231</width>
      <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Century Schoolbook L</family>
-     <pointsize>18</pointsize>
+     <pointsize>12</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -41,7 +41,7 @@
   <widget class="QPushButton" name="ankiPubSubSettings">
    <property name="geometry">
     <rect>
-     <x>380</x>
+     <x>400</x>
      <y>10</y>
      <width>92</width>
      <height>27</height>
@@ -183,6 +183,19 @@
      <width>501</width>
      <height>281</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="publishDeck">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>10</y>
+     <width>111</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Publish a Deck</string>
    </property>
   </widget>
  </widget>
