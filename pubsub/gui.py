@@ -26,6 +26,7 @@ from Deck import AnkipubSubDeck
 from ankipubsub_settings import AnkiPubSubSettingsUI
 from functools import partial
 from Queue import Queue
+from publish_deck import Ui_publishDeckForm
 
 
 
@@ -56,12 +57,6 @@ def share(did):
              )
     except Exception as e:
         showInfo("There was a problem sharing your deck. \n"+str(e))
-
-    d = QDialog()
-    d.ui = Ui_Dialog()
-    d.ui.setupUi(d)
-    d.ui.remoteDeckID.setText(str(util.getRemoteDeckID(did)))
-    d.exec_()
 
 
 def addRemoteDeckButton(form):
@@ -135,6 +130,16 @@ def drawTable(f):
         table.setItem(i, 1, QTableWidgetItem(str(deck.getRemoteID())))
 
 
+def publishDeck():
+    f = QDialog()
+    f.ui = Ui_publishDeckForm()
+    f.ui.setupUi(f)
+    #f.ui.pushButtonPublishDeck.connect(lambda: showInfo("test"))
+    f.ui.comboBox.addItems(mw.col.decks.allNames())
+    #f.ui.pushButtonAbort.connect(lambda: f.done(0))
+    f.exec_()
+
+
 def ankiDeckManagerSetup():
     """
     Configure the Ui_Dialog.
@@ -151,6 +156,7 @@ def ankiDeckManagerSetup():
     f.ui.setupUi(f)
 
     f.ui.ankiPubSubSettings.clicked.connect(lambda: ankiPubSubSettings())
+    f.ui.publishDeck.clicked.connect(lambda: publishDeck())
     drawTable(f)
 
     f.ui.ankiPubSubAddDeck.clicked.connect(partial(addRemoteDeckButton, form=f))

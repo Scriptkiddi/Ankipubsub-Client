@@ -30,7 +30,7 @@
      <rect>
       <x>0</x>
       <y>20</y>
-      <width>161</width>
+      <width>191</width>
       <height>25</height>
      </rect>
     </property>
@@ -48,6 +48,55 @@
      <string>Select your Deck:</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>0</y>
+      <width>131</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Set a Public Name:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="publicName">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>20</y>
+      <width>181</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="pushButtonPublishDeck">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>260</y>
+     <width>92</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Publish Deck</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonAbort">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>260</y>
+     <width>92</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Abort</string>
+   </property>
   </widget>
  </widget>
  <resources/>
