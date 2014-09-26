@@ -25,7 +25,7 @@ class connectionHandler(object):
         self.username = username
         self.session = requests.Session()
 
-    def push_deck(self, deck):
+    def push_deck(self, deck, writepassword=None):
         """
         Push the passed deck to the server.
 
@@ -61,7 +61,8 @@ class connectionHandler(object):
         # Führe Post aus
         deckResponse = self.session.post(url,
                                          data=json.dumps(payload),
-                                         headers=headers)
+                                         headers=headers,
+                                         auth=(writepassword, ''))
         if not deckResponse.status_code == requests.codes.ok:
             if deckResponse.status_code == 401:
                 raise AuthError(deckResponse.json().get('error').get('message'))
@@ -81,7 +82,7 @@ class connectionHandler(object):
         deck.update({'models': newModels})
         return deck
 
-    def pull_deck(self, deckid, **kwargs):
+    def pull_deck(self, deckid, readpassword=None, **kwargs):
         """
         Pull the deck with the passed deckid from the server.
 
@@ -101,7 +102,7 @@ class connectionHandler(object):
 
         # Führe get anfrage aus
         deckResponse = self.session.get(self.url+'/pull/deck/'+deckid,
-                                        params=payload)
+                                        params=payload, auth=(readpassword, ''))
 
         # prüfe ob ne valid anfrage zurück kam
         if not deckResponse.status_code == requests.codes.ok:
