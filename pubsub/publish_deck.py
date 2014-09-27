@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'publish_deck.ui'
 #
-# Created: Thu Sep 25 18:24:12 2014
+# Created: Sat Sep 27 20:53:33 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -41,6 +41,7 @@ class Ui_publishDeckForm(object):
         self.label_2.setGeometry(QtCore.QRect(200, 0, 131, 20))
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.publicName = QtGui.QLineEdit(self.groupBox)
+        self.publicName.setEnabled(False)
         self.publicName.setGeometry(QtCore.QRect(200, 20, 181, 25))
         self.publicName.setObjectName(_fromUtf8("publicName"))
         self.pushButtonPublishDeck = QtGui.QPushButton(publishDeckForm)
@@ -49,6 +50,24 @@ class Ui_publishDeckForm(object):
         self.pushButtonAbort = QtGui.QPushButton(publishDeckForm)
         self.pushButtonAbort.setGeometry(QtCore.QRect(280, 260, 92, 27))
         self.pushButtonAbort.setObjectName(_fromUtf8("pushButtonAbort"))
+        self.checkBox = QtGui.QCheckBox(publishDeckForm)
+        self.checkBox.setGeometry(QtCore.QRect(20, 90, 271, 20))
+        self.checkBox.setObjectName(_fromUtf8("checkBox"))
+        self.checkBox_2 = QtGui.QCheckBox(publishDeckForm)
+        self.checkBox_2.setGeometry(QtCore.QRect(20, 150, 311, 20))
+        self.checkBox_2.setObjectName(_fromUtf8("checkBox_2"))
+        self.label_3 = QtGui.QLabel(publishDeckForm)
+        self.label_3.setGeometry(QtCore.QRect(20, 120, 121, 16))
+        self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.label_4 = QtGui.QLabel(publishDeckForm)
+        self.label_4.setGeometry(QtCore.QRect(20, 190, 111, 16))
+        self.label_4.setObjectName(_fromUtf8("label_4"))
+        self.lineEdit = QtGui.QLineEdit(publishDeckForm)
+        self.lineEdit.setGeometry(QtCore.QRect(150, 110, 113, 25))
+        self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
+        self.lineEdit_2 = QtGui.QLineEdit(publishDeckForm)
+        self.lineEdit_2.setGeometry(QtCore.QRect(150, 180, 113, 25))
+        self.lineEdit_2.setObjectName(_fromUtf8("lineEdit_2"))
 
         self.retranslateUi(publishDeckForm)
         QtCore.QMetaObject.connectSlotsByName(publishDeckForm)
@@ -59,4 +78,8 @@ class Ui_publishDeckForm(object):
         self.label_2.setText(_translate("publishDeckForm", "Set a Public Name:", None))
         self.pushButtonPublishDeck.setText(_translate("publishDeckForm", "Publish Deck", None))
         self.pushButtonAbort.setText(_translate("publishDeckForm", "Abort", None))
+        self.checkBox.setText(_translate("publishDeckForm", "Users need a password to read cards.", None))
+        self.checkBox_2.setText(_translate("publishDeckForm", "Users need a password to write cards", None))
+        self.label_3.setText(_translate("publishDeckForm", "Reading Password:", None))
+        self.label_4.setText(_translate("publishDeckForm", "Writing Password:", None))
 

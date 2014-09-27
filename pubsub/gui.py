@@ -16,7 +16,8 @@ from database import (sync,
                       removeUserFromWriteGroup,
                       addUserToAdminGroup,
                       removeUserFromAdminGroup,
-                      createTables
+                      createTables,
+                      publishDeck
                       )
 from pubsub import util
 from deckmanagerUI import Ui_AnkiPubSubDeckManager
@@ -130,15 +131,25 @@ def drawTable(f):
         table.setItem(i, 1, QTableWidgetItem(str(deck.getRemoteID())))
 
 
-def publishDeck():
+def publishDeckGui(ankiDeckForm):
     f = QDialog()
     f.ui = Ui_publishDeckForm()
     f.ui.setupUi(f)
-    #f.ui.pushButtonPublishDeck.connect(lambda: showInfo("test"))
+    f.ui.pushButtonPublishDeck.clicked.connect(partial(publishDeckGuiOk, f, ankiDeckForm))
     f.ui.comboBox.addItems(mw.col.decks.allNames())
-    #f.ui.pushButtonAbort.connect(lambda: f.done(0))
+    f.ui.pushButtonAbort.clicked.connect(lambda: f.done(0))
     f.exec_()
 
+def publishDeckGuiOk(form, ankiDeckForm):
+    selectedDeck = str(form.ui.comboBox.currentText())
+    localDeckID = mw.col.decks.id(selectedDeck, False)
+    upload(localDeckID,
+           mw.col.conf.get('ankipubsubServer',
+                           "http://144.76.172.187:5000/v0"),
+           mw.col.conf.get('pubSubName', ""),
+           mw.col.conf.get('pubSubPassword', ""))
+    drawTable(ankiDeckForm)
+    form.done(0)
 
 def ankiDeckManagerSetup():
     """
@@ -156,7 +167,7 @@ def ankiDeckManagerSetup():
     f.ui.setupUi(f)
 
     f.ui.ankiPubSubSettings.clicked.connect(lambda: ankiPubSubSettings())
-    f.ui.publishDeck.clicked.connect(lambda: publishDeck())
+    f.ui.publishDeck.clicked.connect(partial(publishDeckGui, f))
     drawTable(f)
 
     f.ui.ankiPubSubAddDeck.clicked.connect(partial(addRemoteDeckButton, form=f))

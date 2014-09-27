@@ -11,10 +11,19 @@ from aqt.utils import showInfo
 def createTables():
     """Create the Databases needed for the plugin."""
     print('we create the tables we need in your collection if they dont exist')
-    mw.col.db.execute("CREATE TABLE IF NOT EXISTS DeckIDs(RemoteID INT PRIMARY KEY, LocalID INT, ServerURL TEXT, LastUpdate DATETIME DEFAULT CURRENT_TIMESTAMP)")
+    mw.col.db.execute("CREATE TABLE IF NOT EXISTS DeckIDs(RemoteID INT PRIMARY KEY, LocalID INT, ServerURL TEXT, readPassword TEXT, writePassword Text, LastUpdate DATETIME DEFAULT CURRENT_TIMESTAMP)")
     mw.col.db.execute("CREATE TABLE IF NOT EXISTS NoteIDs(RemoteID INT PRIMARY KEY, RemoteDeckID INT, LocalID INT, LastUpdate DATETIME DEFAULT CURRENT_TIMESTAMP)")
     mw.col.db.execute("CREATE TABLE IF NOT EXISTS ModelIDs(RemoteID INT PRIMARY KEY, RemoteDeckID INT, LocalID INT, LastUpdate DATETIME DEFAULT CURRENT_TIMESTAMP)")
 
+
+def publishDeck(localDeckID, name, serverURL, username, password, readingPassword=None, writingPassword=None):
+    localDeckToPush = AnkipubSubDeck.fromLocalID(localDeckID)
+    server = connectionHandler(serverURL, username, password)
+    try:
+        remoteDeck = server.push_deck(localDeckToPush)
+        remoteDeck.save(mw.col, serverURL)
+    except (AuthError, NotFoundError) as e:
+        showInfo(e.message)
 
 def addRemoteDeck(remoteDeckID, serverURL, username, password):
     """Download a Remote Deck From the Server \

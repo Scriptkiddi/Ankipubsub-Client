@@ -103,6 +103,7 @@ class AnkipubSubDeck(UserDict):
                 lastChange = datetime.today()
             creationDate = None
             remoteID = getRemoteDeckID(localDeckID)
+
             return cls(notes,
                        models,
                        ankiDeck.get('name'),
