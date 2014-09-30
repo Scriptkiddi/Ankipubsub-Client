@@ -30,36 +30,6 @@ from Queue import Queue
 from publish_deck import Ui_publishDeckForm
 
 
-
-
-def myShowOptions(self, did):
-    """Overwrite the standard options."""
-    #standard options:
-    m = QMenu(self.mw)
-    a = m.addAction(_("Rename"))
-    a.connect(a, SIGNAL("triggered()"), lambda did=did: self._reankipubsubName(did))
-    a = m.addAction(_("Options"))
-    a.connect(a, SIGNAL("triggered()"), lambda did=did: self._options(did))
-    a = m.addAction(_("Delete"))
-    a.connect(a, SIGNAL("triggered()"), lambda did=did: self._delete(did))
-    #share with pubsub
-    a = m.addAction(_("Share with PubSub"))
-    a.connect(a, SIGNAL("triggered()"), lambda did=did: share(did))
-    m.exec_(QCursor.pos())
-
-
-def share(did):
-    """Share a deck with the server."""
-    try:
-        sync(did,
-             "http://144.76.172.187:5000/v0",
-             mw.col.conf.get('pubSubName', ""),
-             mw.col.conf.get('pubSubPassword', "")
-             )
-    except Exception as e:
-        showInfo("There was a problem sharing your deck. \n"+str(e))
-
-
 def addRemoteDeckButton(form):
     remoteID = form.ui.remoteDeckId.text()
     if not len(remoteID) == 24:
@@ -140,6 +110,7 @@ def publishDeckGui(ankiDeckForm):
     f.ui.pushButtonAbort.clicked.connect(lambda: f.done(0))
     f.exec_()
 
+
 def publishDeckGuiOk(form, ankiDeckForm):
     selectedDeck = str(form.ui.comboBox.currentText())
     localDeckID = mw.col.decks.id(selectedDeck, False)
@@ -150,6 +121,7 @@ def publishDeckGuiOk(form, ankiDeckForm):
            mw.col.conf.get('pubSubPassword', ""))
     drawTable(ankiDeckForm)
     form.done(0)
+
 
 def ankiDeckManagerSetup():
     """
@@ -169,8 +141,7 @@ def ankiDeckManagerSetup():
     f.ui.ankiPubSubSettings.clicked.connect(lambda: ankiPubSubSettings())
     f.ui.publishDeck.clicked.connect(partial(publishDeckGui, f))
     drawTable(f)
-
-    f.ui.ankiPubSubAddDeck.clicked.connect(partial(addRemoteDeckButton, form=f))
+    f.ui.ankiPubSubAddDeck.clicked.connect(partial(addRemoteDeckButton, f))
     f.exec_()
 
 
@@ -381,4 +352,3 @@ DeckBrowser._drawButtons = wrap(DeckBrowser._drawButtons,
 DeckBrowser._linkHandler = wrap(DeckBrowser._linkHandler,
                                 ankiPubSubLinkHandler,
                                 pos='around')
-DeckBrowser._showOptions = myShowOptions
