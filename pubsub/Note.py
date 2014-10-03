@@ -59,7 +59,7 @@ class AnkipubSubNote(UserDict):
         model = col.models.get(getLocalModelID(self.get('model')))
 
         # This is copy and pastet because i have to check something
-        if not getLocalNoteID(self.get('creationNote')):
+        if not self.get('localID') and not getLocalNoteID(self.get('creationNote')):
         # Wurde nicht gerade eben gepusht und ist nicht in der Lokalen Datenbank also neu
             note = Note(col,model)
             fields = self.getFields()
@@ -70,6 +70,10 @@ class AnkipubSubNote(UserDict):
             col.save()
             localID = note.id
 
+        elif self.get('localID')  and not getLocalNoteID(self.get('creationNote')):        # Hat ne lokale Id wurde also eben gepusht aber ist nicht in der Lokalen Datenbank also update
+
+            localID = self.get('localID')
+            print("Implement Update")
         else:  # Hat nichts von allem also existiert schon also update
             # get remote id for local
             localID = getLocalNoteID(self.get('creationNote'))
