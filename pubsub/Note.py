@@ -58,7 +58,24 @@ class AnkipubSubNote(UserDict):
         col = mw.col
         model = col.models.get(getLocalModelID(self.get('model')))
 
-        if not self.get('localID') and not getLocalNoteID(self.get('creationNote')):
+        # This is copy and pastet because i have to check something
+        if not getLocalNoteID(self.get('creationNote')):
+        # Wurde nicht gerade eben gepusht und ist nicht in der Lokalen Datenbank also neu
+            note = Note(col,model)
+            fields = self.getFields()
+            for key in fields:
+                note.__setitem__(str(key), fields.get(key))
+            note.flush()
+            col.addNote(note)
+            col.save()
+            localID = note.id
+
+        else:  # Hat nichts von allem also existiert schon also update
+            # get remote id for local
+            localID = getLocalNoteID(self.get('creationNote'))
+            Note(col, None, localID)
+            print("Implement Update")
+        """if not self.get('localID') and not getLocalNoteID(self.get('creationNote')):
         # Wurde nicht gerade eben gepusht und ist nicht in der Lokalen Datenbank also neu
             note = Note(col,model)
             fields = self.getFields()
@@ -77,7 +94,7 @@ class AnkipubSubNote(UserDict):
             # get remote id for local
             localID = getLocalNoteID(self.get('creationNote'))
             Note(col, None, localID)
-            print("Implement Update")
+            print("Implement Update")"""
         print(localID)
         col.genCards([localID])
         col.save()

@@ -35,12 +35,11 @@ def addRemoteDeck(remoteDeckID, serverURL, username, password):
     # pull the remote Deck from the server with the passed rID
     try:
         remoteDeckPull = server.pull_deck(remoteDeckID)
+        print(remoteDeckPull.getNotes())
+        # Create the Deck
+        remoteDeckPull.save(mw.col, serverURL)
     except (AuthError, NotFoundError) as e:
         showInfo(e.message)
-    print(remoteDeckPull.getNotes())
-    # Create the Deck
-    remoteDeckPull.save(mw.col, serverURL)
-
 
 def sync(localDeckID, serverURL, username, password, firsttime=True):
     """Syncronice a local deck with a remote deck."""
