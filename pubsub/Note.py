@@ -80,14 +80,20 @@ class AnkipubSubNote(UserDict):
             localID = getLocalNoteID(self.get('creationNote'))
             oldNote = Note(col, None, localID)
             fields = self.getFields()
+            print('test1')
             for key in fields:
+                print('test2')
                 if key not in oldNote.keys():
                     print("we changed quite a bit")
                 else:
+                    print("test3")
+                    print(fields.get(key))
+                    print(oldNote.__getitem__(key))
                     if not fields.get(key) == oldNote.__getitem__(key):
                         oldNote.__setitem__(key, fields.get(key))
                         oldNote.flush()
                         col.save()
+                        print("we changed it")
                     # if fields.get(key) == 
             #print(oldNote.values())
             #print(oldNote.cards())
