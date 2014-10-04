@@ -58,10 +58,10 @@ class AnkipubSubNote(UserDict):
         col = mw.col
         model = col.models.get(getLocalModelID(self.get('model')))
 
-        # This is copy and pastet because i have to check something
+
         if not self.get('localID') and not getLocalNoteID(self.get('creationNote')):
         # Wurde nicht gerade eben gepusht und ist nicht in der Lokalen Datenbank also neu
-            note = Note(col,model)
+            note = Note(col, model)
             fields = self.getFields()
             for key in fields:
                 note.__setitem__(str(key), fields.get(key))
@@ -71,35 +71,26 @@ class AnkipubSubNote(UserDict):
             localID = note.id
 
         elif self.get('localID')  and not getLocalNoteID(self.get('creationNote')):        # Hat ne lokale Id wurde also eben gepusht aber ist nicht in der Lokalen Datenbank also update
-
+            # Hier muss noch die remoteID in die datenbank geschrieben werden
             localID = self.get('localID')
-            print("Implement Update")
+
+            print("DO i really need this")
         else:  # Hat nichts von allem also existiert schon also update
             # get remote id for local
             localID = getLocalNoteID(self.get('creationNote'))
-            Note(col, None, localID)
-            print("Implement Update")
-        """if not self.get('localID') and not getLocalNoteID(self.get('creationNote')):
-        # Wurde nicht gerade eben gepusht und ist nicht in der Lokalen Datenbank also neu
-            note = Note(col,model)
+            oldNote = Note(col, None, localID)
             fields = self.getFields()
             for key in fields:
-                note.__setitem__(str(key), fields.get(key))
-            note.flush()
-            col.addNote(note)
-            col.save()
-            localID = note.id
-
-        elif self.get('localID')  and not getLocalNoteID(self.get('creationNote')):        # Hat ne lokale Id wurde also eben gepusht aber ist nicht in der Lokalen Datenbank also update
-
-            localID = self.get('localID')
-            print("Implement Update")
-        else:  # Hat nichts von allem also existiert schon also update
-            # get remote id for local
-            localID = getLocalNoteID(self.get('creationNote'))
-            Note(col, None, localID)
-            print("Implement Update")"""
-        print(localID)
+                if key not in oldNote.keys():
+                    print("we changed quite a bit")
+                else:
+                    if not fields.get(key) == oldNote.__getitem__(key):
+                        oldNote.__setitem__(key, fields.get(key))
+                        oldNote.flush()
+                        col.save()
+                    # if fields.get(key) == 
+            #print(oldNote.values())
+            #print(oldNote.cards())
         col.genCards([localID])
         col.save()
         mw.col.db.execute("INSERT OR REPLACE INTO NoteIDs (RemoteID, RemoteDeckID, LocalID) VALUES (?,?,?)", self.get('creationNote'), remoteDeckID, localID)

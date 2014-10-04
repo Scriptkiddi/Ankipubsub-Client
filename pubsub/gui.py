@@ -152,12 +152,11 @@ def ankiDeckManagerSetup():
     straps it all together and exec it to present
     it to the user.
     """
-    showInfo(str(mw.col.conf.get('pubSupTest',"")))
-    if not mw.col.conf.get('pubSupTest', ""):
+    if not mw.col.conf.get('pubSupFirstRun', ""):
         createTables()
         ankiPubSubSettings()
-        mw.col.conf['pubSupTest'] = "True"
-        # mw.col.save()
+        mw.col.conf['pubSupFirstRun'] = "True"
+        mw.col.save()
         mw.col.db.commit()
     # create an cell widget
 
