@@ -306,7 +306,7 @@ def ankiDeckSettings(did):
             canWrite.setChecked(True)
         if user in adminGroup:
             isAdmin.setChecked(True)
-        else:
+        if mw.col.conf.get('pubSubName', "") in adminGroup and mw.col.conf.get('pubSubName', ""):
             isAdmin.setModifiable(False)
             canWrite.setModifiable(False)
             canRead.setModifiable(False)
