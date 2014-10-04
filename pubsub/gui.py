@@ -30,6 +30,26 @@ from Queue import Queue
 from publish_deck import Ui_publishDeckForm
 
 
+class DisableCheckBox(QtGui.QCheckBox):
+
+    def __init__(self, *args, **kwargs):
+        QtGui.QCheckBox.__init__(self, *args, **kwargs)
+        self.is_modifiable = True
+        self.clicked.connect(self.value_change_slot)
+
+    def value_change_slot(self):
+        if self.isChecked():
+            self.setChecked(self.is_modifiable)
+        else:
+            self.setChecked(not self.is_modifiable)
+
+    def setModifiable(self, flag):
+        self.is_modifiable = flag
+
+    def isModifiable(self):
+        return self.is_modifiable
+
+
 def addRemoteDeckButton(form):
     remoteID = form.ui.remoteDeckId.text()
     if not len(remoteID) == 24:
@@ -132,10 +152,12 @@ def ankiDeckManagerSetup():
     straps it all together and exec it to present
     it to the user.
     """
+
     if not mw.col.conf.get('AnkiPubSubFirstRun', None):
         createTables()
         ankiPubSubSettings()
-        mw.col.conf['AnkiPubSubFirstRun'] = True
+        mw.col.conf['AnkiPubSubFirstRun'] = "True"
+        mw.col.save()
     # create an cell widget
 
     f = QDialog()
@@ -170,9 +192,9 @@ def ankiPubSubSettings():
 def addUser(table):
     i = table.rowCount()
     table.insertRow(i)
-    isAdmin = QtGui.QCheckBox(table)
-    canWrite = QtGui.QCheckBox(table)
-    canRead = QtGui.QCheckBox(table)
+    isAdmin = DisableCheckBox(table)
+    canWrite = DisableCheckBox(table)
+    canRead = DisableCheckBox(table)
     table.setCellWidget(i, 1, canRead)
     table.setCellWidget(i, 2, canWrite)
     table.setCellWidget(i, 3, isAdmin)
@@ -274,15 +296,19 @@ def ankiDeckSettings(did):
     table.setColumnCount(4)
     table.setRowCount(len(users))
     for (i, user) in enumerate(users):
-        isAdmin = QtGui.QCheckBox(table)
-        canWrite = QtGui.QCheckBox(table)
-        canRead = QtGui.QCheckBox(table)
+        isAdmin = DisableCheckBox(table)
+        canWrite = DisableCheckBox(table)
+        canRead = DisableCheckBox(table)
         if user in readGroup:
             canRead.setChecked(True)
         if user in writeGroup:
             canWrite.setChecked(True)
         if user in adminGroup:
             isAdmin.setChecked(True)
+        else:
+            isAdmin.isModifiable(False)
+            canWrite.isModifiable(False)
+            canRead.isModifiable(False)
 
         table.setItem(i, 0, QTableWidgetItem(str(user)))
         isAdmin.connect(isAdmin, SIGNAL("stateChanged(int)"), partial(changes.put, (i, 3, isAdmin)))
