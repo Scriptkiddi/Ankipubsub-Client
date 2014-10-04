@@ -99,4 +99,3 @@ class Ui_AnkiPubSubDeckManager(object):
         self.label_3.setText(_translate("AnkiPubSubDeckManager", "Add reading permission:", None))
         self.label_4.setText(_translate("AnkiPubSubDeckManager", "Add writing permission:", None))
         self.publishDeck.setText(_translate("AnkiPubSubDeckManager", "Publish a Deck", None))
-

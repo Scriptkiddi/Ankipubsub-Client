@@ -152,12 +152,13 @@ def ankiDeckManagerSetup():
     straps it all together and exec it to present
     it to the user.
     """
-
-    if not mw.col.conf.get('AnkiPubSubFirstRun', None):
+    showInfo(str(mw.col.conf.get('pubSupTest',"")))
+    if not mw.col.conf.get('pubSupTest', ""):
         createTables()
         ankiPubSubSettings()
-        mw.col.conf['AnkiPubSubFirstRun'] = "True"
-        mw.col.save()
+        mw.col.conf['pubSupTest'] = "True"
+        # mw.col.save()
+        mw.col.db.commit()
     # create an cell widget
 
     f = QDialog()
@@ -306,9 +307,9 @@ def ankiDeckSettings(did):
         if user in adminGroup:
             isAdmin.setChecked(True)
         else:
-            isAdmin.isModifiable(False)
-            canWrite.isModifiable(False)
-            canRead.isModifiable(False)
+            isAdmin.setModifiable(False)
+            canWrite.setModifiable(False)
+            canRead.setModifiable(False)
 
         table.setItem(i, 0, QTableWidgetItem(str(user)))
         isAdmin.connect(isAdmin, SIGNAL("stateChanged(int)"), partial(changes.put, (i, 3, isAdmin)))
