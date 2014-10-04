@@ -74,7 +74,7 @@ class Ui_AnkiPubSubDeckManager(object):
         self.ankiPubSubAddDeck.setGeometry(QtCore.QRect(410, 40, 81, 81))
         self.ankiPubSubAddDeck.setText(_fromUtf8(""))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("images/Plus-Resized.jpg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("../../addons/pubsub/images/Plus-Resized.jpg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ankiPubSubAddDeck.setIcon(icon1)
         self.ankiPubSubAddDeck.setIconSize(QtCore.QSize(81, 81))
         self.ankiPubSubAddDeck.setObjectName(_fromUtf8("ankiPubSubAddDeck"))

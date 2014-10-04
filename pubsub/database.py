@@ -28,7 +28,6 @@ def publishDeck(localDeckID, name, serverURL, username, password, readingPasswor
 def addRemoteDeck(remoteDeckID, serverURL, username, password):
     """Download a Remote Deck From the Server \
     and creates it in the local database."""
-    createTables()
     # Create a Server handle to send the requests to
     server = connectionHandler(serverURL, username, password)
     print('Starting to add a Remote Deck with the id {0}'.format(remoteDeckID))
@@ -45,7 +44,6 @@ def sync(localDeckID, serverURL, username, password, firsttime=True):
     """Syncronice a local deck with a remote deck."""
     col = mw.col
     col.flush()
-    createTables()
     # Create a Server handle to send the requests to
     server = connectionHandler(serverURL, username, password)
     col = mw.col

@@ -132,8 +132,12 @@ def ankiDeckManagerSetup():
     straps it all together and exec it to present
     it to the user.
     """
+    if not mw.col.conf.get('AnkiPubSubFirstRun', None):
+        createTables()
+        ankiPubSubSettings()
+        mw.col.conf['AnkiPubSubFirstRun'] = True
     # create an cell widget
-    createTables()
+
     f = QDialog()
     f.ui = Ui_AnkiPubSubDeckManager()
     f.ui.setupUi(f)

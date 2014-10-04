@@ -136,8 +136,7 @@ class connectionHandler(object):
         if r.status_code == requests.codes.ok:
             return True
         else:
-            print(r)
-            raise Exception('401', 'Wrong Password or Username')
+            raise AuthError(str(r.status_code)+" wrong username or password")
 
     def logout(self):
         """destroy the session on the server side."""
