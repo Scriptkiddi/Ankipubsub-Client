@@ -88,7 +88,7 @@
     <string>Publish Deck</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButtonAbort">
+  <widget class="QPushButton" name="pushButtonCancel">
    <property name="geometry">
     <rect>
      <x>280</x>
@@ -98,7 +98,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Abort</string>
+    <string>Cancel</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="checkBox">

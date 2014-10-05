@@ -134,7 +134,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QPushButton" name="Abort">
+  <widget class="QPushButton" name="Cancel">
    <property name="geometry">
     <rect>
      <x>290</x>
@@ -144,7 +144,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Abort</string>
+    <string>Cancel</string>
    </property>
   </widget>
   <widget class="QPushButton" name="Save">
