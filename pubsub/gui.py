@@ -309,6 +309,7 @@ def ankiDeckSettings(did):
             isAdmin.setModifiable(False)
             canWrite.setModifiable(False)
             canRead.setModifiable(False)
+            f.ui.AddUser.setEnabled(False)
 
         table.setItem(i, 0, QTableWidgetItem(str(user)))
         isAdmin.connect(isAdmin, SIGNAL("stateChanged(int)"), partial(changes.put, (i, 3, isAdmin)))
