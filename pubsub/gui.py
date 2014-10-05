@@ -127,7 +127,7 @@ def publishDeckGui(ankiDeckForm):
     f.ui.setupUi(f)
     f.ui.pushButtonPublishDeck.clicked.connect(partial(publishDeckGuiOk, f, ankiDeckForm))
     f.ui.comboBox.addItems(mw.col.decks.allNames())
-    f.ui.pushButtonAbort.clicked.connect(lambda: f.done(0))
+    f.ui.pushButtonCancel.clicked.connect(lambda: f.done(0))
     f.exec_()
 
 
@@ -330,7 +330,7 @@ def ankiDeckSettings(did):
     table.resizeColumnsToContents()
 
     f.ui.AddUser.clicked.connect(lambda: addUser(table))
-    f.ui.Abort.clicked.connect(lambda: f.done(0))
+    f.ui.Cancel.clicked.connect(lambda: f.done(0))
     f.ui.Save.clicked.connect(lambda: deckSettingsSave(table, users, did, changes, f))
     f.exec_()
 
