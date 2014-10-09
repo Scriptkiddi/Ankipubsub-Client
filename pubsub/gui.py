@@ -175,6 +175,7 @@ def ankiPubSubSettingsSave(form):
     # f.ui.username
     mw.col.conf['pubSubName'] = form.ui.username.text()
     mw.col.conf['pubSubPassword'] = form.ui.password.text()
+    mw.col.flush()
     form.done(0)
 
 
