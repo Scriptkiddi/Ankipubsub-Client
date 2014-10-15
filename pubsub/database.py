@@ -122,6 +122,7 @@ def upload(localDeckID, serverURL, username, password):
 
 def publish(localDeckID, serverURL, username, password, readPassword=None, writePassword=None):
     localDeckToPush = AnkipubSubDeck.fromLocalID(localDeckID)
+    showInfo(readPassword)
     localDeckToPush.setReadPassword(readPassword)
     localDeckToPush.setWritePassword(writePassword)
     server = connectionHandler(serverURL, username, password)

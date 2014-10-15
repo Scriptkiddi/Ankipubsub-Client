@@ -140,6 +140,7 @@ def publishDeckGuiOk(form, ankiDeckForm):
     localDeckID = mw.col.decks.id(selectedDeck, False)
     readPassword = form.ui.readPassword.text()
     writePassword = form.ui.writePassword.text()
+    showInfo(readPassword)
     publish(localDeckID,
            mw.col.conf.get('ankipubsubServer',
                            "http://144.76.172.187:5000/v0"),

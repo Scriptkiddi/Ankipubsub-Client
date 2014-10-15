@@ -9,6 +9,7 @@ from Model import AnkipubSubModel
 from copy import deepcopy
 from Errors import AuthError, NotFoundError
 from util import getDeckReadPassword, getRemoteDeckID
+from aqt.utils import showInfo
 
 
 class connectionHandler(object):
@@ -58,7 +59,7 @@ class connectionHandler(object):
             url = self.url+"/push/deck/"+deck.getRemoteID()
         else:
             url = self.url+"/push/deck"
-
+        showInfo(deck.getReadPassword())
         # Führe Post aus
         writepassword = deck.getWritePassword()
         deckResponse = self.session.post(url,
