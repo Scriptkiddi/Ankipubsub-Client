@@ -101,7 +101,8 @@ class connectionHandler(object):
             payload = {}
 
         self.login()  # Login
-        readpassword = getDeckReadPassword(deckid)
+        
+        #readpassword = getDeckReadPassword(deckid)
         # Führe get anfrage aus
         deckResponse = self.session.get(self.url+'/pull/deck/'+deckid,
                                         params=payload, auth=(readpassword, ''))
