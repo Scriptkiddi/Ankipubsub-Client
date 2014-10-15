@@ -8,7 +8,7 @@ from Note import AnkipubSubNote
 from Model import AnkipubSubModel
 from copy import deepcopy
 from Errors import AuthError, NotFoundError
-from util import getDeckReadPassword
+from util import getDeckReadPassword, getRemoteDeckID
 
 
 class connectionHandler(object):
@@ -101,8 +101,9 @@ class connectionHandler(object):
             payload = {}
 
         self.login()  # Login
-        
-        #readpassword = getDeckReadPassword(deckid)
+
+        if getRemoteDeckID():
+            readpassword = getDeckReadPassword(deckid)
         # Führe get anfrage aus
         deckResponse = self.session.get(self.url+'/pull/deck/'+deckid,
                                         params=payload, auth=(readpassword, ''))

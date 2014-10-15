@@ -33,6 +33,7 @@ def addRemoteDeck(remoteDeckID, serverURL, username, password, readPassword=None
     print('Starting to add a Remote Deck with the id {0}'.format(remoteDeckID))
     # pull the remote Deck from the server with the passed rID
     try:
+        showInfo(readPassword)
         remoteDeckPull = server.pull_deck(remoteDeckID, readPassword)
         print(remoteDeckPull.getNotes())
         # Create the Deck
