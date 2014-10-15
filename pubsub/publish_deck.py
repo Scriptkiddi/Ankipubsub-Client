@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'publish_deck.ui'
 #
-# Created: Sat Sep 27 20:53:33 2014
+# Created: Wed Oct 15 17:46:39 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -62,12 +62,12 @@ class Ui_publishDeckForm(object):
         self.label_4 = QtGui.QLabel(publishDeckForm)
         self.label_4.setGeometry(QtCore.QRect(20, 190, 111, 16))
         self.label_4.setObjectName(_fromUtf8("label_4"))
-        self.lineEdit = QtGui.QLineEdit(publishDeckForm)
-        self.lineEdit.setGeometry(QtCore.QRect(150, 110, 113, 25))
-        self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
-        self.lineEdit_2 = QtGui.QLineEdit(publishDeckForm)
-        self.lineEdit_2.setGeometry(QtCore.QRect(150, 180, 113, 25))
-        self.lineEdit_2.setObjectName(_fromUtf8("lineEdit_2"))
+        self.readPassword = QtGui.QLineEdit(publishDeckForm)
+        self.readPassword.setGeometry(QtCore.QRect(150, 110, 113, 25))
+        self.readPassword.setObjectName(_fromUtf8("readPassword"))
+        self.writePassword = QtGui.QLineEdit(publishDeckForm)
+        self.writePassword.setGeometry(QtCore.QRect(150, 180, 113, 25))
+        self.writePassword.setObjectName(_fromUtf8("writePassword"))
 
         self.retranslateUi(publishDeckForm)
         QtCore.QMetaObject.connectSlotsByName(publishDeckForm)

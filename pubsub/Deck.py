@@ -4,7 +4,9 @@ from UserDict import UserDict
 from pubsub.util import (getRemoteDeckID,
                          getRemoteDeckLastChange,
                          getLocalDeckID,
-                         convertToDatetime)
+                         convertToDatetime,
+                         getDeckReadPassword,
+                         getDeckWritePassword)
 from aqt import mw
 from aqt.utils import askUserDialog, openLink, showInfo, getOnlyText, shortcut
 from Note import AnkipubSubNote
@@ -27,6 +29,9 @@ class AnkipubSubDeck(UserDict):
         self.setLastChange(lastChange)
         self.setRemoteID(remoteID)
         self.setLocalID(localDeckID)
+        if remoteID:
+            self.setReadPassword(getDeckReadPassword(remoteID))
+            self.setWritePassword(getDeckWritePassword(remoteID))
 
     @classmethod
     def fromJsonObject(cls, deck):
@@ -163,6 +168,18 @@ class AnkipubSubDeck(UserDict):
     def getLastChange(self):
         return self.get('lastChange')
 
+    def setReadPassword(self, password):
+        self.update({'readPassword': password})
+
+    def getReadPassword(self):
+        return self.get('readPassword')
+
+    def setWritePassword(self, password):
+        self.update({'writePassword': password})
+
+    def getWritePassword(self):
+        return self.get('writePassword')
+
     def save(self, col, serverURL):
         col = mw.col
         models = self.get('models')
@@ -173,8 +190,8 @@ class AnkipubSubDeck(UserDict):
 
         if self.get('id'):
             col.db.execute("INSERT OR REPLACE INTO DeckIDs\
-             (RemoteID, LocalID, ServerURL) VALUES (?,?,?)", self.get('id'),
-                           localDeckID, serverURL)
+             (RemoteID, LocalID, ServerURL, readPassword, writePassword) VALUES (?,?,?,?,?)", self.get('id'),
+                           localDeckID, serverURL, self.getReadPassword(), self.getWritePassword())
         for model in models:
             model.save(self.get('id'))
         for note in notes:

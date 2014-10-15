@@ -17,7 +17,8 @@ from database import (sync,
                       addUserToAdminGroup,
                       removeUserFromAdminGroup,
                       createTables,
-                      publishDeck
+                      publishDeck,
+                      publish
                       )
 from pubsub import util
 from deckmanagerUI import Ui_AnkiPubSubDeckManager
@@ -55,9 +56,12 @@ def addRemoteDeckButton(form):
     if not len(remoteID) == 24:
         showInfo('This seems is not a valid Remote Deck ID please try again')
         return
+    readPassword = form.ui.readPW.text()
+    form.ui.writePW.text()
     addRemoteDeck(remoteID, "http://144.76.172.187:5000/v0",
                   mw.col.conf.get('pubSubName', ""),
-                  mw.col.conf.get('pubSubPassword', ""))
+                  mw.col.conf.get('pubSubPassword', ""),
+                  readPassword)
     drawTable(form)
 
 
@@ -134,11 +138,13 @@ def publishDeckGui(ankiDeckForm):
 def publishDeckGuiOk(form, ankiDeckForm):
     selectedDeck = str(form.ui.comboBox.currentText())
     localDeckID = mw.col.decks.id(selectedDeck, False)
-    upload(localDeckID,
+    readPassword = form.ui.readPassword.text()
+    writePassword = form.ui.writePassword.text()
+    publish(localDeckID,
            mw.col.conf.get('ankipubsubServer',
                            "http://144.76.172.187:5000/v0"),
            mw.col.conf.get('pubSubName', ""),
-           mw.col.conf.get('pubSubPassword', ""))
+           mw.col.conf.get('pubSubPassword', ""), readPassword, writePassword)
     drawTable(ankiDeckForm)
     form.done(0)
 
@@ -153,6 +159,7 @@ def ankiDeckManagerSetup():
     it to the user.
     """
     if not mw.col.conf.get('pubSupFirstRun', ""):
+
         createTables()
         ankiPubSubSettings()
         mw.col.conf['pubSupFirstRun'] = "True"

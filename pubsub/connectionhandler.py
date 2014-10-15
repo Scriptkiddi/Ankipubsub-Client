@@ -8,6 +8,7 @@ from Note import AnkipubSubNote
 from Model import AnkipubSubModel
 from copy import deepcopy
 from Errors import AuthError, NotFoundError
+from util import getDeckReadPassword
 
 
 class connectionHandler(object):
@@ -25,7 +26,7 @@ class connectionHandler(object):
         self.username = username
         self.session = requests.Session()
 
-    def push_deck(self, deck, writepassword=None):
+    def push_deck(self, deck):
         """
         Push the passed deck to the server.
 
@@ -59,6 +60,7 @@ class connectionHandler(object):
             url = self.url+"/push/deck"
 
         # Führe Post aus
+        writepassword = deck.getWritePassword()
         deckResponse = self.session.post(url,
                                          data=json.dumps(payload),
                                          headers=headers,
@@ -99,7 +101,7 @@ class connectionHandler(object):
             payload = {}
 
         self.login()  # Login
-
+        readpassword = getDeckReadPassword(deckid)
         # Führe get anfrage aus
         deckResponse = self.session.get(self.url+'/pull/deck/'+deckid,
                                         params=payload, auth=(readpassword, ''))

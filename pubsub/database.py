@@ -25,7 +25,7 @@ def publishDeck(localDeckID, name, serverURL, username, password, readingPasswor
     except (AuthError, NotFoundError) as e:
         showInfo(e.message)
 
-def addRemoteDeck(remoteDeckID, serverURL, username, password):
+def addRemoteDeck(remoteDeckID, serverURL, username, password, readPassword=None):
     """Download a Remote Deck From the Server \
     and creates it in the local database."""
     # Create a Server handle to send the requests to
@@ -33,7 +33,7 @@ def addRemoteDeck(remoteDeckID, serverURL, username, password):
     print('Starting to add a Remote Deck with the id {0}'.format(remoteDeckID))
     # pull the remote Deck from the server with the passed rID
     try:
-        remoteDeckPull = server.pull_deck(remoteDeckID)
+        remoteDeckPull = server.pull_deck(remoteDeckID, readPassword)
         print(remoteDeckPull.getNotes())
         # Create the Deck
         remoteDeckPull.save(mw.col, serverURL)
@@ -111,6 +111,18 @@ def download(localDeckID, serverURL, username, password):
 
 def upload(localDeckID, serverURL, username, password):
     localDeckToPush = AnkipubSubDeck.fromLocalID(localDeckID)
+    server = connectionHandler(serverURL, username, password)
+    try:
+        remoteDeck = server.push_deck(localDeckToPush)
+        remoteDeck.save(mw.col, serverURL)
+    except (AuthError, NotFoundError) as e:
+        showInfo(e.message)
+
+
+def publish(localDeckID, serverURL, username, password, readPassword=None, writePassword=None):
+    localDeckToPush = AnkipubSubDeck.fromLocalID(localDeckID)
+    localDeckToPush.setReadPassword(readPassword)
+    localDeckToPush.setWritePassword(writePassword)
     server = connectionHandler(serverURL, username, password)
     try:
         remoteDeck = server.push_deck(localDeckToPush)

@@ -10,6 +10,17 @@ def deleteAnkiPubSubDeck(remoteID):
     mw.col.db.scalar("DELETE FROM NoteIDs WHERE RemoteDeckID = ?", remoteID)
     mw.col.save()
 
+
+def getDeckReadPassword(remoteID):
+    return mw.col.db.scalar("SELECT readPassword FROM DeckIDs WHERE RemoteID = ?",
+                            remoteID)
+
+
+def getDeckWritePassword(remoteID):
+    return mw.col.db.scalar("SELECT writePassword FROM DeckIDs WHERE RemoteID = ?",
+                            remoteID)
+
+
 def getAllAnkiPubSubDecks():
     return mw.col.db.all("SELECT RemoteID, LocalID FROM DeckIDs")
 
