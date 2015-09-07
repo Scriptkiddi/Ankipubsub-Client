@@ -1,9 +1,10 @@
 __author__ = 'fritz'
-
+#from pubsub.database.utils import get_all_ankipubsub_decks
 
 def drawTable(f):
     table = f.ui.tableWidget
-    decks = util.getAllAnkiPubSubDecks()
+    #decks = util.getAllAnkiPubSubDecks()
+    decks = []
     table.setRowCount(len(decks))
     table.setColumnCount(3)
     table.setHorizontalHeaderLabels(['Deck', 'Deck Remote ID', ''])
@@ -12,9 +13,10 @@ def drawTable(f):
     table.setColumnWidth(2, 120)
 
     for (i, deck) in enumerate(decks):
-        did = deck[1]
+        
+        deck_id = deck[1]
 
-        deck = AnkipubSubDeck.fromLocalID(did)
+        deck = AnkipubSubDeck.fromLocalID(deck_id)
         deckRemoteID = deck.getRemoteID()
         widget = QWidget(table)
         btnDelete = QPushButton(widget)
@@ -27,7 +29,7 @@ def drawTable(f):
         btnDownload.setGeometry(30, 0, 30, 30)
         # TODO FIX TO PARTIAL
         btnDownload.clicked.connect(
-            partial(download, did,
+            partial(download, deck_id,
                     mw.col.conf.get('ankipubsubServer',
                                     "http://144.76.172.187:5000/v0"),
                     mw.col.conf.get('pubSubName', ""),
@@ -40,7 +42,7 @@ def drawTable(f):
         btnUpload.setIcon(QIcon('../../addons/pubsub/images/Upload-Resized.jpg'))
         btnUpload.setIconSize(QSize(25, 25))
         btnUpload.clicked.connect(
-            partial(upload, did,
+            partial(upload, deck_id,
                     mw.col.conf.get('ankipubsubServer',
                                     "http://144.76.172.187:5000/v0"),
                     mw.col.conf.get('pubSubName', ""),

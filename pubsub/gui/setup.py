@@ -4,7 +4,7 @@ from Queue import Queue
 from aqt import mw
 
 #from permissions import Ui_Dialog
-from pubsub.database import create_tables
+from pubsub.database.__main__ import create_tables
 from aqt.utils import askUserDialog, openLink, showInfo, getOnlyText, shortcut
 from .draw import drawTable
 from .auto_gen.ankipubsub_settings import Ui_Form as Ui_ankipubsub_settings
