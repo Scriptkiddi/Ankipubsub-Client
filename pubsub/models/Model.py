@@ -3,6 +3,8 @@ from pubsub.database.utils import is_remote_model, get_remote_model_id
 from aqt import mw
 from .Field import Field
 from .Template import Template
+import json
+from copy import deepcopy
 
 
 class Model():
@@ -58,6 +60,19 @@ class Model():
         css = anki_model.get('css')
 
         return cls(name, tags, usn, fields, sortf, templates, latex_post, latex_pre, type, css, remote_id, local_id)
+
+    def json(self):
+        dic = deepcopy(self.__dict__)
+        dic.update({"deck": self.deck.remote_id})
+        field_remote_ids = []
+        for field in self.fields:
+            field_remote_ids.append(field.remote_id)
+        dic.update({"fields": field_remote_ids})
+        template_remote_ids = []
+        for template in self.templates:
+            template_remote_ids.append(template.remote_id)
+        dic.update({"templates": template_remote_ids})
+        return json.dumps(dic)
 
 
 

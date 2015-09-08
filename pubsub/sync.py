@@ -1,9 +1,11 @@
 __author__ = 'fritz'
-from .models.Deck import Deck
+from pubsub.models.Deck import Deck
 from .models.Note import Note
 from .models.Model import Model
 from .models.Settings import DeckSettings
-import requests
+from connection.utils import create_on_server
+from database.models import db
+
 
 
 def sync_with_local_deck_id(local_id):
@@ -25,31 +27,35 @@ def sync_with_local_deck_id(local_id):
 
     # From this point on everything should have the correct relations to each other
     # now we start to sync with the server
-
+    settings = DeckSettings(anki_deck.local_id)
+    print(anki_deck.remote_id)
     if anki_deck.remote_id:
-        pass # TODO see if somethign changed
+        print("-----------------")
+        # TODO see if somethign changed
+        # todo maybe write __eq__ for the deck class to easily compare if there where any changes
     else:
-        deck_json = anki_deck.json()
-        settings = DeckSettings(anki_deck.local_id)
-        r = requests.post(settings.server_url+"decks/", data=deck_json, headers={"content-type": "application/json"})
-        if r.status_code == requests.codes.ok:
-            r = r.json()
-            anki_deck.remote_id = r.get('id')
-            print(anki_deck.remote_id)
-            # todo save remote id /
-            # todo maybe write __eq__ for the deck class to easily compare if there where any changes
-
-
-
-        pass # TODO create deck on server
+        anki_deck.remote_id = create_on_server(anki_deck, settings)
+        anki_deck.save()
+        # todo save remote id /
     for model in model_objects.values():
-        if not model.remote_id:
-            pass # create model on the server
+        if model.remote_id:
+            pass # TODO see if something changed
         else:
-            pass
-            # TODO see if something changed
+            for field in model.fields:
+                print(field.remote_id)
+                if not field.remote_id:
+                    field.remote_id = create_on_server(field, settings)
+                    field.save()
+            for template in model.templates:
+                print(template.remote_id)
+                if not template.remote_id:
+                    template.remote_id = create_on_server(template, settings)
+                    template.save()
+            model.remote_id = create_on_server(model, settings)
+            #model.save()
     for note in notes:
-        if not note.remote_id:
-            pass # todo create on server
+        if note.remote_id:
+            pass  # todo check if something has changed
         else:
-            pass # todo check if something has changed
+            note.remote_id = create_on_server(note, settings)
+            #note.save()
